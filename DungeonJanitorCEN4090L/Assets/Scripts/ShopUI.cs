@@ -7,4 +7,9 @@ public class ShopUI : MonoBehaviour
     {
         SceneManager.LoadScene("ProgressionTreeScene");
     }
+
+    public void LoadShopScene()
+    {
+        SceneManager.LoadScene("ShopScene");
+    }
 }
