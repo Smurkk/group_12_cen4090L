@@ -1787,8 +1787,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734c0f3c0bc9a0146bb7c7ac31ad6d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 753af36b59473364d9c394e2174224da, type: 2}
   resolutionDropdown: {fileID: 1056045663}
+  graphicsDropdown: {fileID: 1346177513}
+  volumeSlider: {fileID: 687486635}
+  audioMixer: {fileID: 24100000, guid: 753af36b59473364d9c394e2174224da, type: 2}
+  autoApplyOnSceneLoad: 1
 --- !u!114 &794463567
 MonoBehaviour:
   m_ObjectHideFlags: 0
