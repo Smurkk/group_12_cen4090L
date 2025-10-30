@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DungeonJanitorMainMenuPic_0: 7941104386157110782
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
