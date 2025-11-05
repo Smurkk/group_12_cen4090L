@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6511800382622653816}
   - component: {fileID: 7595015694451909316}
   - component: {fileID: 2152028220506965661}
-  - component: {fileID: 7134696877531939620}
   - component: {fileID: 5579422349639195875}
   m_Layer: 5
   m_Name: ProgressionNodeCard
@@ -123,22 +122,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
---- !u!114 &7134696877531939620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2393966105632392554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9d765e8af85fd44b954f3df07ddd33e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 6262627541742517748}
-  nameText: {fileID: 4577161744617132028}
-  priceText: {fileID: 3982001910411851073}
-  buyButton: {fileID: 8541815123928231081}
 --- !u!114 &5579422349639195875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,10 +134,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5ec8b95650ac349b4f4f9e28979eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  nameText: {fileID: 0}
-  costText: {fileID: 0}
-  unlockButton: {fileID: 0}
+  icon: {fileID: 6262627541742517748}
+  nameText: {fileID: 4577161744617132028}
+  costText: {fileID: 3982001910411851073}
+  unlockButton: {fileID: 8541815123928231081}
 --- !u!1 &3755815556398282153
 GameObject:
   m_ObjectHideFlags: 0
