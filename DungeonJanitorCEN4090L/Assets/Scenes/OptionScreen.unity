@@ -1791,7 +1791,7 @@ MonoBehaviour:
   graphicsDropdown: {fileID: 1346177513}
   volumeSlider: {fileID: 687486635}
   audioMixer: {fileID: 24100000, guid: 753af36b59473364d9c394e2174224da, type: 2}
-  autoApplyOnSceneLoad: 1
+  applyOnSceneLoad: 1
 --- !u!114 &794463567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1946,8 +1946,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0021362, y: -0.00091553}
-  m_SizeDelta: {x: 2056.2, y: 1008.5}
+  m_AnchoredPosition: {x: -0.011715, y: -0.00091553}
+  m_SizeDelta: {x: 2058.3, y: 1008.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &908139923
 MonoBehaviour:
