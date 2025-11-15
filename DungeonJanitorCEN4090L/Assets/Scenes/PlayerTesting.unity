@@ -294,7 +294,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -332,8 +332,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 12.9203, y: -24.2255}
-  m_SizeDelta: {x: 25.8406, y: 48.4511}
+  m_AnchoredPosition: {x: 12.525, y: -17.9}
+  m_SizeDelta: {x: 65.4907, y: 48.4511}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &596568712
 MonoBehaviour:
@@ -407,8 +407,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -31.9, y: -5.2332}
-  m_SizeDelta: {x: 107.612, y: 90.0299}
+  m_AnchoredPosition: {x: -19.4, y: -0.000012398}
+  m_SizeDelta: {x: 135.8732, y: 125.8836}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &652430545
 MonoBehaviour:
