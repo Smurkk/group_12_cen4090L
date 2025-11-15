@@ -6,10 +6,12 @@ public class Player : ScriptableObject
 
     [SerializeField, Tooltip("DO NOT CHANGE THIS!")] private Weapon broomWeapon; // Always equipped
     
-    public int Health;
+    public int CurrentHealth;
     public int Mana;
     public int Level;
     public int Experience;
+
+    public int maxHealth = 100;
 
     public double Damage;
     public double BaseStrength;
@@ -20,15 +22,6 @@ public class Player : ScriptableObject
     public Weapon BroomWeapon => broomWeapon ??= Resources.Load<Weapon>("Weapons/Melee/Broom");
 
     public Armor Armor;
-
-    public Player()
-    {
-
-    }
-    ~Player()
-    {
-        // Might not be necessary?
-    }
 
 
 }
