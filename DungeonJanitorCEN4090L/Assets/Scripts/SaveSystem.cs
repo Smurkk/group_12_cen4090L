@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using UnityEngine;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
 
 public static class SaveSystem
 {
+    // ✅ Global flag to tell the game scene what to do
+    public static bool LoadOnStart = false;
+
     public static void SavePlayer(Player player, Transform playerTransform)
     {
         BinaryFormatter formatter = new BinaryFormatter();
@@ -39,5 +42,11 @@ public static class SaveSystem
             Debug.LogError("Save file not found in " + path);
             return null;
         }
+    }
+
+    public static bool SaveExists()
+    {
+        string path = Application.persistentDataPath + "/player.fun";
+        return File.Exists(path);
     }
 }

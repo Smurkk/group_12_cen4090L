@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     public void OnAttack()
     {
-        if (EstToggleOptions.GameIsPaused)
+        if (EscToggleOptions.GameIsPaused)
             return;
         Attack();
     }

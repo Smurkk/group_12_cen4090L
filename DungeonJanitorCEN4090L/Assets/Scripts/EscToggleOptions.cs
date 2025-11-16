@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class EstToggleOptions : MonoBehaviour
+public class EscToggleOptions : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuPanel;
 
-    public static bool GameIsPaused { get; private set; }  // 👈 global flag
+    public static bool GameIsPaused { get; set; }
+    // 👈 global flag
 
     void Update()
     {

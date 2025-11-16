@@ -2,9 +2,9 @@
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private Player playerData;      // ScriptableObject
-    [SerializeField] private healthBar healthBar;    // Scene reference
-    [SerializeField] private Transform playerTransform; // 👈 NEW: actual moving object
+    [SerializeField] private Player playerData;        // ScriptableObject
+    [SerializeField] private healthBar healthBar;      // Scene reference
+    [SerializeField] private Transform playerTransform; // actual moving object
 
     private void Awake()
     {
@@ -15,10 +15,24 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        playerData.CurrentHealth = playerData.maxHealth;
         healthBar.SetMaxHealth(playerData.maxHealth);
-        healthBar.SetHealth(playerData.CurrentHealth);
+
+        if (SaveSystem.LoadOnStart && SaveSystem.SaveExists())
+        {
+            Debug.Log("[PlayerStats] LoadOnStart is true, loading save...");
+            LoadPlayer();
+
+            // 🔑 one-shot: don't keep loading automatically on future scene loads
+            SaveSystem.LoadOnStart = false;
+        }
+        else
+        {
+            // Fresh start / New Game path
+            playerData.CurrentHealth = playerData.maxHealth;
+            healthBar.SetHealth(playerData.CurrentHealth);
+        }
     }
+
 
     public void SavePlayer()
     {
@@ -51,12 +65,14 @@ public class PlayerStats : MonoBehaviour
         playerData.CurrentHealth = data.health;
         healthBar.SetHealth(playerData.CurrentHealth);
 
-        // Restore position on the REAL moving object
+        // Restore position on the real moving object
         Vector3 pos;
         pos.x = data.position[0];
         pos.y = data.position[1];
         pos.z = data.position[2];
 
         playerTransform.position = pos;
+
+        Debug.Log($"[PlayerStats] Applied loaded position: {playerTransform.position}");
     }
 }
