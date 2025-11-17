@@ -35,4 +35,9 @@ public class MainMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0);
     }
+
+    public void OptionsScreen()
+    {
+        SceneManager.LoadSceneAsync(2);
+    }
 }
