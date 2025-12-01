@@ -1,4 +1,3 @@
-// AbilityUser.cs
 using UnityEngine;
 
 [RequireComponent(typeof(ResourceManager))]
@@ -11,7 +10,7 @@ public class AbilityUser : MonoBehaviour
     private ResourceManager resourceManager;
     private float cooldownTimer;
 
-    public float SpellPower; 
+    public float AbilityPower; 
 
     private void Awake()
     {

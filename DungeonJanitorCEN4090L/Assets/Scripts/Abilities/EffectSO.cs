@@ -1,4 +1,3 @@
-// EffectSO.cs
 using UnityEngine;
 
 public abstract class EffectSO : ScriptableObject

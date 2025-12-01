@@ -1,4 +1,3 @@
-// IEffect.cs
 public interface IEffect
 {
     /// <summary>

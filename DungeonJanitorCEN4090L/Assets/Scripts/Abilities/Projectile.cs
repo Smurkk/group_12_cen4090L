@@ -1,4 +1,3 @@
-// Projectile.cs
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]

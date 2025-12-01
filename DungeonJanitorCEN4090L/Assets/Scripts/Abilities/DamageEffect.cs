@@ -1,4 +1,3 @@
-// DamageEffect.cs
 using UnityEngine;
 
 /// <summary>
@@ -13,9 +12,8 @@ public class DamageEffect : IEffect
         var health = target.GetComponent<HealthComponent>();
         if (health == null) return;
 
-        // Example: finalDamage = magnitude + caster.SpellPower * scalingFactor
         float casterPower = 0f;
-        if (caster != null) casterPower = caster.SpellPower;
+        if (caster != null) casterPower = caster.AbilityPower;
 
         float finalDamage = def.magnitude + casterPower * def.scalingFactor;
 

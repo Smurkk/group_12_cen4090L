@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : ScriptableObject
 {
 
-    [SerializeField, Tooltip("DO NOT CHANGE THIS!")] private Weapon broomWeapon; // Always equipped
+    [SerializeField, Tooltip("Should always be equipped")] private Weapon broomWeapon; // Always equipped
     
     public int Health;
     public int Mana;
@@ -20,6 +20,8 @@ public class Player : ScriptableObject
     public Weapon BroomWeapon => broomWeapon ??= Resources.Load<Weapon>("Weapons/Melee/Broom");
 
     public Armor Armor;
+
+    public AbilityDefinition[] Abilities;
 
     public Player()
     {

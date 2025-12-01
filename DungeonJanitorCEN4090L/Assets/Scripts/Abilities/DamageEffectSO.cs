@@ -1,4 +1,3 @@
-// DamageEffectSO.cs
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilities/Effects/DamageEffectSO")]
