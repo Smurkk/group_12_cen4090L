@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    // ✅ Global flag to tell the game scene what to do
+    
     public static bool LoadOnStart = false;
 
     public static void SavePlayer(Player player, Transform playerTransform)

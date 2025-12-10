@@ -5,10 +5,10 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        // 🔒 always a fresh game
+       
         SaveSystem.LoadOnStart = false;
         Time.timeScale = 1f;
-        EscToggleOptions.GameIsPaused = false;   // or your pause controller
+        EscToggleOptions.GameIsPaused = false;  
         SceneManager.LoadSceneAsync(1);
     }
 
@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     {
         if (SaveSystem.SaveExists())
         {
-            SaveSystem.LoadOnStart = true;       // ✅ tell game to load save
+            SaveSystem.LoadOnStart = true;       
             Time.timeScale = 1f;
             EscToggleOptions.GameIsPaused = false;
             SceneManager.LoadSceneAsync(1);
@@ -29,8 +29,8 @@ public class MainMenu : MonoBehaviour
 
     public void MenuScreen()
     {
-        // called from in-game (pause menu)
-        SaveSystem.LoadOnStart = false;          // ✅ don't auto-load when we come back later
+       
+        SaveSystem.LoadOnStart = false;         
         EscToggleOptions.GameIsPaused = false;
         Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0);

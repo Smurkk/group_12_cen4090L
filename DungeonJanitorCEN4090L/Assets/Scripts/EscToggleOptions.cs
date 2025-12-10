@@ -6,7 +6,6 @@ public class EscToggleOptions : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel;
 
     public static bool GameIsPaused { get; set; }
-    // 👈 global flag
 
     void Update()
     {
@@ -33,10 +32,10 @@ public class EscToggleOptions : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    // Optional: hook this to a “Quit to Main Menu” button
+    
     public void QuitToMainMenu()
     {
-        Time.timeScale = 1f; // Make sure time scale is normal
+        Time.timeScale = 1f; 
         SceneManager.LoadScene("MainMenu");
     }
 }

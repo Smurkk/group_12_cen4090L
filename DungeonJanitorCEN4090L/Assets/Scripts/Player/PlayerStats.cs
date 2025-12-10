@@ -22,7 +22,6 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("[PlayerStats] LoadOnStart is true, loading save...");
             LoadPlayer();
 
-            // 🔑 one-shot: don't keep loading automatically on future scene loads
             SaveSystem.LoadOnStart = false;
         }
         else
