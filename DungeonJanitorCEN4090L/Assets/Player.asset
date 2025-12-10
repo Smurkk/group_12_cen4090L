@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f6e7a7411cd56448ba7f9c774a5e78, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  Health: 0
+  broomWeapon: {fileID: 0}
+  transform: {fileID: 0}
+  CurrentHealth: 100
   Mana: 0
   Level: 0
   Experience: 0
+  maxHealth: 100
   Damage: 0
   BaseStrength: 0
   Speed: 0

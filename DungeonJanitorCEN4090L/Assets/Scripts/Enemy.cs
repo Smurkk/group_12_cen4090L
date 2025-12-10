@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -34,6 +36,8 @@ public class Enemy : MonoBehaviour
     private Vector2 patrolTarget;
     private float patrolWaitTimer;
     private Vector2 spawnPoint;
+
+    public healthBar healthBar;
     
     protected virtual void Start()
     {
@@ -136,19 +140,24 @@ public class Enemy : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damage);
+            
+
         }
     }
     
     public virtual void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
-        
+
+        // Reflects damage done to health bar
+        healthBar.SetHealth(Convert.ToInt32(currentHealth));
+
         // Flashing red if damaged
         StartCoroutine(DamageFlash());
         
         if (currentHealth <= 0)
         {
-            Die();
+            //Die();
         }
     }
     
@@ -156,13 +165,13 @@ public class Enemy : MonoBehaviour
     {
         isRoomActive = active;
     }
-    
+    /*
     protected virtual void Die()
     {
         currentState = EnemyState.Dead;
         
         // Notify respawn manager
-        EnemyRespawnManager respawnManager = FindAnyObjectByType<EnemyRespawnManager>();
+        //EnemyRespawnManager respawnManager = FindAnyObjectByType<EnemyRespawnManager>();
         if (respawnManager != null)
         {
             respawnManager.OnEnemyDied(this);
@@ -170,10 +179,10 @@ public class Enemy : MonoBehaviour
         
         Destroy(gameObject);
     }
-    
+    */
     private void SetNewPatrolTarget()
     {
-        Vector2 randomDirection = Random.insideUnitCircle * patrolRadius;
+        Vector2 randomDirection = UnityEngine.Random.insideUnitCircle * patrolRadius;
         patrolTarget = spawnPoint + randomDirection;
     }
     

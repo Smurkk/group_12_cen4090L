@@ -72,9 +72,10 @@ public class Boss : Enemy
             }
         }
     }
-    
+    /*
     protected override void Die()
     {
         base.Die();
     }
+    */
 }

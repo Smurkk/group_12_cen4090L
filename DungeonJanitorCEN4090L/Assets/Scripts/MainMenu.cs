@@ -1,20 +1,43 @@
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
+       
+        SaveSystem.LoadOnStart = false;
+        Time.timeScale = 1f;
+        EscToggleOptions.GameIsPaused = false;  
         SceneManager.LoadSceneAsync(1);
     }
 
-    public void OptionScreen()
+    public void ContinueGame()
     {
-        SceneManager.LoadSceneAsync(2);
+        if (SaveSystem.SaveExists())
+        {
+            SaveSystem.LoadOnStart = true;       
+            Time.timeScale = 1f;
+            EscToggleOptions.GameIsPaused = false;
+            SceneManager.LoadSceneAsync(1);
+        }
+        else
+        {
+            Debug.Log("Continue pressed, but no save file found.");
+        }
     }
 
     public void MenuScreen()
     {
+       
+        SaveSystem.LoadOnStart = false;         
+        EscToggleOptions.GameIsPaused = false;
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0);
+    }
+
+    public void OptionsScreen()
+    {
+        SceneManager.LoadSceneAsync(2);
     }
 }
