@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d2508e0171d9f45b110e81d847f605, type: 3}
   m_Name: Dragonslayer's Greatbow
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Dragonslayer's Greatbow
   icon: {fileID: 0}
-  price: 0
-  description: 
+  price: 500
+  description: +100 damage

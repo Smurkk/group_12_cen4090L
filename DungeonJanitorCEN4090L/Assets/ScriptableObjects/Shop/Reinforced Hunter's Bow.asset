@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d2508e0171d9f45b110e81d847f605, type: 3}
   m_Name: Reinforced Hunter's Bow
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Reinforced Hunter's Bow
   icon: {fileID: 0}
-  price: 0
-  description: 
+  price: 200
+  description: +40 damage

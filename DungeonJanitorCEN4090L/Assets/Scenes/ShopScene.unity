@@ -480,10 +480,55 @@ MonoBehaviour:
   cardPrefab: {fileID: 7134696877531939620, guid: bc04926969248c54b8945f900f52a5c9, type: 3}
   currency: {fileID: 446443196}
   goldText: {fileID: 1261503101}
-  swordColumn: {fileID: 0}
-  bowColumn: {fileID: 0}
-  staffColumn: {fileID: 0}
-  weapons: []
+  swordColumn: {fileID: 1843546780}
+  bowColumn: {fileID: 908116990}
+  staffColumn: {fileID: 1091433242}
+  weapons:
+  - item: {fileID: 11400000, guid: fd5a95fdc1dbbfb46b4942e9dbdffc04, type: 2}
+    type: 0
+    tierIndex: 0
+  - item: {fileID: 11400000, guid: 6bde1a7047acbad40802b713191454ff, type: 2}
+    type: 0
+    tierIndex: 1
+  - item: {fileID: 11400000, guid: 24acc824d5e83b24fb029d9369e65ec0, type: 2}
+    type: 0
+    tierIndex: 2
+  - item: {fileID: 11400000, guid: 313adad6cf37a3242bbb5c43cfa68c2f, type: 2}
+    type: 0
+    tierIndex: 3
+  - item: {fileID: 11400000, guid: 6a3f8335311ffc74da2509083182abad, type: 2}
+    type: 0
+    tierIndex: 4
+  - item: {fileID: 11400000, guid: ded109ef8f93c1143ad8fad99d5db48e, type: 2}
+    type: 1
+    tierIndex: 0
+  - item: {fileID: 11400000, guid: 1beb6be783b09324a97736467e7b8e54, type: 2}
+    type: 1
+    tierIndex: 1
+  - item: {fileID: 11400000, guid: 9e85941b77be2224cbe9ff7fab251a5e, type: 2}
+    type: 1
+    tierIndex: 2
+  - item: {fileID: 11400000, guid: 0b241721bb145ec4b88f5d46f069ee45, type: 2}
+    type: 1
+    tierIndex: 3
+  - item: {fileID: 11400000, guid: 50d425b6221e5e54da5c635591f42575, type: 2}
+    type: 1
+    tierIndex: 4
+  - item: {fileID: 11400000, guid: e44ecb08d374f0e4e9c0873cc219f8b3, type: 2}
+    type: 2
+    tierIndex: 0
+  - item: {fileID: 11400000, guid: 46bbbf9787c17e040b9cc060509f6a79, type: 2}
+    type: 2
+    tierIndex: 1
+  - item: {fileID: 11400000, guid: bc19445c07346824a925c65be99604ff, type: 2}
+    type: 2
+    tierIndex: 2
+  - item: {fileID: 11400000, guid: 39cbe86fab5f7694fa49c21c91031416, type: 2}
+    type: 2
+    tierIndex: 3
+  - item: {fileID: 11400000, guid: 13039dc1b3c251e4e8f181770c6c5cef, type: 2}
+    type: 2
+    tierIndex: 4
 --- !u!1 &374568992
 GameObject:
   m_ObjectHideFlags: 0
