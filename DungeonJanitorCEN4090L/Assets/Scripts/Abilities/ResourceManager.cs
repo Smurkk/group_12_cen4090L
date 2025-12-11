@@ -19,7 +19,7 @@ public class ResourceManager : MonoBehaviour
     public float CurrentAmount => currentResource;
     public float Max => maxResource;
     public float RegenRate => regenRate;
-    public bool Regenerate => regenerate; // Probably won't need, but in case we decide to display to the user or something.
+    public bool Regenerate => regenerate; // Probably won't need, but in case we decide to display to the user, or disable under certain conditions.
 
 
     private void Update()
