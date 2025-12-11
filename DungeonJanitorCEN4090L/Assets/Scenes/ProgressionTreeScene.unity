@@ -1389,7 +1389,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 53d157c3471d62d45b9ce2938cefc2f4, type: 2}
   experience: {fileID: 445905427}
   xpText: {fileID: 1980647942}
-  nodePrefab: {fileID: 5579422349639195875, guid: 9a57d7bf95e4f8e4881c7e2df3a4931b, type: 3}
+  nodePrefab: {fileID: 7658707121370643925, guid: 8f70455859e790740b84d513ca6ff799, type: 3}
   column1: {fileID: 914803746}
   column2: {fileID: 83834964}
   column3: {fileID: 2082665748}

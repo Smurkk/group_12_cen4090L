@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Worn Wooden Bow
   m_EditorClassIdentifier: 
   displayName: Worn Wooden Bow
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5a540aead06e2cb4994f6bd4a8c52ee6, type: 3}
   price: 100
   description: +20 damage

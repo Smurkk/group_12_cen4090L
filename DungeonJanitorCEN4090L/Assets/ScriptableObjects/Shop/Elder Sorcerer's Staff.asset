@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Elder Sorcerer's Staff
   m_EditorClassIdentifier: 
   displayName: Elder Sorcerer's Staff
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d2a8e5c61665f82459fd2d68887e2435, type: 3}
   price: 500
   description: +100 damage

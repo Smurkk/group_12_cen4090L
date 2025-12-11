@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Enchanted Oak Staff
   m_EditorClassIdentifier: 
   displayName: Enchanted Oak Staff
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d2a8e5c61665f82459fd2d68887e2435, type: 3}
   price: 200
   description: +40 damage
