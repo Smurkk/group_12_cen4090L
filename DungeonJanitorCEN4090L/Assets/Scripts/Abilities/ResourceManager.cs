@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
+    [Header("Dev stuff")]
+    [SerializeField, Tooltip("This serves only to give us a declarative statement on what this resource is. Currently, this is not read or used for anything.")] 
+        private string resourceType;
+    
+
     [Header("Resources")]
     [SerializeField] private float maxResource;
     [SerializeField] private float currentResource;

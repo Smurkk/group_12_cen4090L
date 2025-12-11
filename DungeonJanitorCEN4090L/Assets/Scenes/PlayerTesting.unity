@@ -294,7 +294,7 @@ Transform:
   m_GameObject: {fileID: 984106804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.020702, y: 3.1135004, z: -2.9777393}
+  m_LocalPosition: {x: 0.050701857, y: 1.6535003, z: -2.9777393}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -474,11 +474,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 28750492820294860, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.97
       objectReference: {fileID: 0}
     - target: {fileID: 28750492820294860, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.46
       objectReference: {fileID: 0}
     - target: {fileID: 28750492820294860, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       propertyPath: m_LocalPosition.z
@@ -536,6 +536,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7181714205612376740}
+    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7181714205612376743}
+    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7181714205612376744}
+    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7181714205612376745}
+    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7181714205612376746}
   m_SourcePrefab: {fileID: 100100000, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
 --- !u!1 &7181714205612376738 stripped
 GameObject:
@@ -559,6 +571,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c5504519394af842a70f1c13ac91389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityUser: {fileID: 7181714205612376741}
+  castPoint: {fileID: 1234240407}
 --- !u!114 &7181714205612376741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3e26401205f4e43a462ae2063477f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedAbility: {fileID: 0}
+  equippedAbility: {fileID: 11400000, guid: b757ec8f21b40a74d9211e886b92563a, type: 2}
   castPoint: {fileID: 1234240407}
   projectileLifetime: 0
   AbilityPower: 0
@@ -587,10 +601,91 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706012898a675b24e8506e36299659d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxResource: 0
-  currentResource: 0
-  regenRate: 0
-  regenerate: 0
+  resourceType: mana
+  maxResource: 100
+  currentResource: 50
+  regenRate: 2
+  regenerate: 1
+--- !u!114 &7181714205612376743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181714205612376738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bc1d2d1dfef8b4a84b859db3282fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 20
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7181714205612376744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181714205612376738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &7181714205612376745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181714205612376738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba074bff75d3cc7459b9eef294346969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7181714205612376746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181714205612376738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2086966f1d77c742ad4735222bdfe17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

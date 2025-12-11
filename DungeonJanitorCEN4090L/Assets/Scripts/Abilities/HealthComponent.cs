@@ -50,7 +50,7 @@ public class HealthComponent : MonoBehaviour, IHealth
         currentHealth = Mathf.Max(0f, currentHealth - amount);
         OnDamaged?.Invoke(amount);
         OnHealthChanged?.Invoke(currentHealth);
-
+        Debug.Log($"{name} took {amount} damage. Current health: {currentHealth}/{maxHealth}");
         if (IsDead) Die();
     }
 
@@ -77,6 +77,7 @@ public class HealthComponent : MonoBehaviour, IHealth
         OnDeath?.Invoke();
         Debug.Log($"{name} died.");
         // TODO: Add death logic (play animation, drop loot, etc.)
+
     }
 
     // Added this in case we want to fully heal the player at some point.
