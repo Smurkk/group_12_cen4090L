@@ -4,12 +4,16 @@ using UnityEngine;
 public class Player : ScriptableObject
 {
 
-    [SerializeField, Tooltip("Should always be equipped")] private Weapon broomWeapon; // Always equipped
-    
-    public int Health;
+    [SerializeField, Tooltip("DO NOT CHANGE THIS!")] private Weapon broomWeapon; // Always equipped
+
+    //public Transform transform;
+
+    public int CurrentHealth;
     public int Mana;
     public int Level;
     public int Experience;
+
+    public int maxHealth = 100;
 
     public double Damage;
     public double BaseStrength;
@@ -21,16 +25,7 @@ public class Player : ScriptableObject
 
     public Armor Armor;
 
-    public AbilityDefinition[] Abilities;
 
-    public Player()
-    {
-
-    }
-    ~Player()
-    {
-        // Might not be necessary?
-    }
 
 
 }

@@ -16,3 +16,5 @@ MonoBehaviour:
   icon: {fileID: 0}
   cost: 100
   placeholderEffect: Increase movement speed by 5%.
+  columnIndex: 0
+  tierIndex: 1

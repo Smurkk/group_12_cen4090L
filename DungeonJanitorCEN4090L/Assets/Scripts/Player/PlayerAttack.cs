@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +6,8 @@ public class PlayerAttack : MonoBehaviour
 {
     public void OnAttack()
     {
+        if (EscToggleOptions.GameIsPaused)
+            return;
         Attack();
     }
 
@@ -16,6 +18,7 @@ public class PlayerAttack : MonoBehaviour
     {
         playerRenderer = GetComponent<Renderer>();
     }
+
 
     private void Attack()
     {

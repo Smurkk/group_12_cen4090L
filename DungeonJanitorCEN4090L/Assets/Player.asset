@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   broomWeapon: {fileID: 0}
-  Health: 0
+  transform: {fileID: 0}
+  CurrentHealth: 100
   Mana: 0
   Level: 0
   Experience: 0
+  maxHealth: 100
   Damage: 0
   BaseStrength: 0
   Speed: 0
