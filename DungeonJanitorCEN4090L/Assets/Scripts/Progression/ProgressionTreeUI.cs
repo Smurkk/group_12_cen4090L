@@ -231,6 +231,22 @@ public class ProgressionTreeUI : MonoBehaviour
         if (xpText && experience)
             xpText.text = $"XP: {experience.XP}";
     }
+
+    public void ResetProgression()
+    {
+        // Clear runtime state
+        unlocked.Clear();
+
+        // Remove saved data
+        PlayerPrefs.DeleteKey("ProgressionTree_Unlocked");
+        PlayerPrefs.Save();
+
+        // Rebuild visuals to reflect locked state
+        RefreshUI();
+
+        Debug.Log("Progression tree reset.");
+    }
+
 }
 
 

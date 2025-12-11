@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Text;
 
 // Weapon types correspond to the three columns
 public enum WeaponType
@@ -21,6 +22,8 @@ public class WeaponEntry
 
 public class ShopUIManager : MonoBehaviour
 {
+    private const string SaveKey_ShopWeapons = "Shop_WeaponsPurchased";
+
     [Header("Data")]
     // Old generic items list (armor, potions, etc.) – currently unused, but kept in case needed later.
     public List<ShopItemSO> items = new();
@@ -66,6 +69,9 @@ public class ShopUIManager : MonoBehaviour
                 if (t != null) staffColumn = t;
             }
         }
+
+        // Load purchases before building UI so state is correct
+        LoadShopProgress();
     }
 
     void Start()
@@ -194,6 +200,9 @@ public class ShopUIManager : MonoBehaviour
             purchasedWeapons.Add(item);
             equippedByType[entry.type] = item;
 
+            // Save purchases
+            SaveShopProgress();
+
             // Update card visuals
             RefreshAllWeaponCards();
         }
@@ -294,5 +303,95 @@ public class ShopUIManager : MonoBehaviour
             }
         }
     }
+
+    // =======================
+    // SAVE / LOAD SHOP STATE
+    // =======================
+    void SaveShopProgress()
+    {
+        if (weapons == null || weapons.Count == 0)
+        {
+            PlayerPrefs.DeleteKey(SaveKey_ShopWeapons);
+            PlayerPrefs.Save();
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder(weapons.Count);
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            var w = weapons[i];
+            bool isPurchased = w != null && w.item != null && purchasedWeapons.Contains(w.item);
+            sb.Append(isPurchased ? '1' : '0');
+        }
+
+        PlayerPrefs.SetString(SaveKey_ShopWeapons, sb.ToString());
+        PlayerPrefs.Save();
+        // Debug.Log($"Saved shop purchases: {sb}");
+    }
+
+    void LoadShopProgress()
+    {
+        purchasedWeapons.Clear();
+        equippedByType.Clear();
+
+        string data = PlayerPrefs.GetString(SaveKey_ShopWeapons, string.Empty);
+        if (string.IsNullOrEmpty(data))
+            return;
+
+        int len = Mathf.Min(data.Length, weapons.Count);
+        for (int i = 0; i < len; i++)
+        {
+            if (data[i] == '1')
+            {
+                var w = weapons[i];
+                if (w != null && w.item != null)
+                {
+                    purchasedWeapons.Add(w.item);
+                }
+            }
+        }
+
+        // Rebuild equippedByType: highest tier purchased of each type becomes equipped
+        foreach (WeaponType type in System.Enum.GetValues(typeof(WeaponType)))
+        {
+            ShopItemSO best = null;
+            int bestTier = -1;
+
+            foreach (var w in weapons)
+            {
+                if (w == null || w.item == null) continue;
+                if (w.type != type) continue;
+                if (!purchasedWeapons.Contains(w.item)) continue;
+
+                if (w.tierIndex > bestTier)
+                {
+                    bestTier = w.tierIndex;
+                    best = w.item;
+                }
+            }
+
+            if (best != null)
+            {
+                equippedByType[type] = best;
+            }
+        }
+    }
+
+    // =======================
+    // RESET SHOP (UI BUTTON)
+    // =======================
+    public void ResetWeaponPurchases()
+    {
+        purchasedWeapons.Clear();
+        equippedByType.Clear();
+
+        PlayerPrefs.DeleteKey(SaveKey_ShopWeapons);
+        PlayerPrefs.Save();
+
+        RefreshAllWeaponCards();
+
+        Debug.Log("Shop weapon purchases reset.");
+    }
 }
+
 
