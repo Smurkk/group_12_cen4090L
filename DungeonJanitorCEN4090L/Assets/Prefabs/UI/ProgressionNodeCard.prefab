@@ -213,6 +213,8 @@ MonoBehaviour:
   nameText: {fileID: 4577161744617132028}
   costText: {fileID: 3982001910411851073}
   unlockButton: {fileID: 8541815123928231081}
+  buttonLabel: {fileID: 2843784303574865453}
+  lockIcon: {fileID: 1186205917429388789}
 --- !u!1 &3755815556398282153
 GameObject:
   m_ObjectHideFlags: 0

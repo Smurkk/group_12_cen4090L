@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b1f530617b9cde40be189c36354df3d, type: 3}
-  m_Name: Swift Steps
+  m_Name: Treasure Hunter V
   m_EditorClassIdentifier: 
-  displayName: Swift Steps
+  displayName: Treasure Hunter V
   icon: {fileID: 0}
-  cost: 100
-  placeholderEffect: Increase movement speed by 5%.
-  columnIndex: 0
-  tierIndex: 1
+  cost: 25
+  placeholderEffect: Gold gained +25% total.
+  columnIndex: 3
+  tierIndex: 4
