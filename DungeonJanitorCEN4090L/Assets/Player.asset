@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f6e7a7411cd56448ba7f9c774a5e78, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
+  broomWeapon: {fileID: 0}
   Health: 0
   Mana: 0
   Level: 0
@@ -19,5 +20,6 @@ MonoBehaviour:
   Damage: 0
   BaseStrength: 0
   Speed: 0
-  Weapon: {fileID: 0}
+  Weapon: {fileID: 11400000, guid: f3e85a9b1a30ffd4a8d4c8c0d44a72e8, type: 2}
   Armor: {fileID: 0}
+  Abilities: []
