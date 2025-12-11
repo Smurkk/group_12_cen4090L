@@ -22,5 +22,6 @@ MonoBehaviour:
   Damage: 0
   BaseStrength: 0
   Speed: 0
-  Weapon: {fileID: 0}
+  Weapon: {fileID: 11400000, guid: f3e85a9b1a30ffd4a8d4c8c0d44a72e8, type: 2}
   Armor: {fileID: 0}
+  Abilities: []
