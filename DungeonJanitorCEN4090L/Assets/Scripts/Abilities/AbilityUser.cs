@@ -44,7 +44,7 @@ public class AbilityUser : MonoBehaviour
 
         if (cooldownTimer > 0f)
         {
-            Debug.Log($"{equippedAbility.Name} is on cooldown");
+            Debug.Log($"{equippedAbility.Name} is on cooldown. Current timer status: {cooldownTimer}");
             return false;
         }
 

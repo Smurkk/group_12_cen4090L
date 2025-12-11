@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Quick Heal
   description: Regenerate health in a pinch.
   icon: {fileID: 0}
-  cooldown: 20
+  cooldown: 5
   resourceCost: 20
   targetingType: 0
   range: 0
@@ -23,9 +23,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   effects:
-  - effect: {fileID: 0}
+  - effect: {fileID: 11400000, guid: b3bf90bef860f5749b515b966c31b0a7, type: 2}
     effectType: 1
-    magnitude: 5
+    magnitude: 3
     duration: 0
     scalingFactor: 1
   projectilePrefab: {fileID: 0}
