@@ -5,6 +5,7 @@ using UnityEngine;
 public class EffectDefinition
 {
     public EffectSO effect;
+    public EffectType effectType;
 
     [Tooltip("How powerful the effect is (how much damage dealt/healing recieved.")]
     public float magnitude;
@@ -15,4 +16,6 @@ public class EffectDefinition
     [Tooltip("Scaling factor to modify the effect. Set to 1 for no scaling.")]
     public float scalingFactor;
 
+    // Centralizing the scaled magnitude calculation. Any changes should be made here.
+    public float GetScaledMagnitude() => magnitude * scalingFactor; 
 }
