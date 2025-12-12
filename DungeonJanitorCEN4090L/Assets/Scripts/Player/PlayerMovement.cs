@@ -49,7 +49,10 @@ public class PlayerMovement : MonoBehaviour
     {
         float sprintMultiplier = isSprinting ? BASE_SPRINT_MULTIPLIER : 1f;
 
+        // Swift Steps passive 
+        float finalSpeed = PassiveStats.ModifyMoveSpeed(SPEED);
+
         Vector3 move = new Vector3(moveInput.x, moveInput.y, 0f);
-        transform.Translate(move * (SPEED * sprintMultiplier) * Time.deltaTime, Space.World);
+        transform.Translate(move * (finalSpeed * sprintMultiplier) * Time.deltaTime, Space.World);
     }
 }

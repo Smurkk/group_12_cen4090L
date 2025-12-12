@@ -15,7 +15,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        healthBar.SetMaxHealth(playerData.maxHealth);
+        healthBar.SetMaxHealth(playerData.MaxHealth);
 
         if (SaveSystem.LoadOnStart && SaveSystem.SaveExists())
         {
@@ -27,7 +27,7 @@ public class PlayerStats : MonoBehaviour
         else
         {
             // Fresh start / New Game path
-            playerData.CurrentHealth = playerData.maxHealth;
+            playerData.CurrentHealth = playerData.MaxHealth;
             healthBar.SetHealth(playerData.CurrentHealth);
         }
     }

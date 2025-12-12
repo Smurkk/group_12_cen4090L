@@ -3,7 +3,6 @@ using TMPro;
 using System.Collections.Generic;
 using System.Text;
 
-// Weapon types correspond to the three columns
 public enum WeaponType
 {
     Sword,
@@ -11,44 +10,47 @@ public enum WeaponType
     Staff
 }
 
-// Links a ShopItemSO to its weapon type and tier within that type
 [System.Serializable]
 public class WeaponEntry
 {
     public ShopItemSO item;
-    public WeaponType type;   // Sword / Bow / Staff
-    public int tierIndex;     // 0..4 for the 5 items in each column
+    public WeaponType type;
+    public int tierIndex; // 0..4
 }
 
 public class ShopUIManager : MonoBehaviour
 {
     private const string SaveKey_ShopWeapons = "Shop_WeaponsPurchased";
 
+    // Separate keys for type-specific multipliers
+    private const string Key_MeleeMult = "WeaponMult_Melee";
+    private const string Key_RangedMult = "WeaponMult_Ranged";
+    private const string Key_MagicMult = "WeaponMult_Magic";
+
     [Header("Data")]
-    // Old generic items list (armor, potions, etc.) – currently unused, but kept in case needed later.
     public List<ShopItemSO> items = new();
 
     [Header("Wiring")]
-    public Transform gridParent;             // ScrollView/Viewport/Content
-    public ShopItemCard cardPrefab;          // Prefabs/UI/ShopItemCard
-    public Currency currency;                // GameSystems (Currency)
-    public TMP_Text goldText;                // GoldText TMP
+    public Transform gridParent;             
+    public ShopItemCard cardPrefab;          
+    public Currency currency;                
+    public TMP_Text goldText;                
 
     [Header("Weapon Shop")]
     public Transform swordColumn;            // parent for swords
     public Transform bowColumn;              // parent for bows
     public Transform staffColumn;            // parent for staffs
 
-    public List<WeaponEntry> weapons = new();    // 15 entries: 5 swords, 5 bows, 5 staffs
+    [Header("Player (Damage Bonus Target)")]
+    public Player playerData;                
+    public List<WeaponEntry> weapons = new();    // 15 entries
 
-    // Runtime state
     private HashSet<ShopItemSO> purchasedWeapons = new();
     private Dictionary<WeaponType, ShopItemSO> equippedByType = new();
     private List<ShopItemCard> weaponCards = new();
 
     void Awake()
     {
-        // If columns weren't assigned in the Inspector, try to auto-find them as children of gridParent
         if (gridParent != null)
         {
             if (swordColumn == null)
@@ -70,20 +72,15 @@ public class ShopUIManager : MonoBehaviour
             }
         }
 
-        // Load purchases before building UI so state is correct
         LoadShopProgress();
     }
 
     void Start()
     {
         RefreshGold();
-        // Build();                // old generic shop – not needed for weapon grid right now
-        BuildWeaponShop();          // build the 3-column weapon grid
+        BuildWeaponShop();
     }
 
-    // =====================
-    //  OLD GENERIC SHOP (unused for now)
-    // =====================
     void Build()
     {
         if (gridParent == null) return;
@@ -119,20 +116,14 @@ public class ShopUIManager : MonoBehaviour
             goldText.text = $"Gold: {currency.Gold}";
     }
 
-    // ==========================
-    //  WEAPON SHOP (3 COLUMNS)
-    // ==========================
-
     void BuildWeaponShop()
     {
-        // Clear existing children in each column
         ClearColumn(swordColumn);
         ClearColumn(bowColumn);
         ClearColumn(staffColumn);
 
         weaponCards.Clear();
 
-        // Instantiate a card for each weapon entry
         foreach (var weapon in weapons)
         {
             if (weapon == null || weapon.item == null)
@@ -147,7 +138,6 @@ public class ShopUIManager : MonoBehaviour
             weaponCards.Add(card);
         }
 
-        // Set initial visual states
         RefreshAllWeaponCards();
     }
 
@@ -169,12 +159,10 @@ public class ShopUIManager : MonoBehaviour
         }
     }
 
-    // Called by ShopItemCard when a weapon card's Buy button is clicked
     void HandleWeaponBuy(ShopItemSO item)
     {
         if (item == null) return;
 
-        // Look up its WeaponEntry to know type/tier
         WeaponEntry entry = GetWeaponEntryForItem(item);
         if (entry == null)
         {
@@ -182,7 +170,6 @@ public class ShopUIManager : MonoBehaviour
             return;
         }
 
-        // Enforce progression: must buy earlier tiers of this type first
         if (!CanBuy(entry))
         {
             Debug.Log($"Cannot buy {item.displayName} yet – purchase earlier {entry.type} tiers first.");
@@ -196,14 +183,12 @@ public class ShopUIManager : MonoBehaviour
             Debug.Log($"Purchased {item.displayName} ({entry.type} tier {entry.tierIndex}) for ${item.price}");
             RefreshGold();
 
-            // Mark as purchased and equipped for this type
             purchasedWeapons.Add(item);
             equippedByType[entry.type] = item;
 
-            // Save purchases
-            SaveShopProgress();
+            ApplyWeaponDamageBonus(entry);
 
-            // Update card visuals
+            SaveShopProgress();
             RefreshAllWeaponCards();
         }
         else
@@ -222,14 +207,11 @@ public class ShopUIManager : MonoBehaviour
         return null;
     }
 
-    // Can this weapon be bought, based on tier progression?
     bool CanBuy(WeaponEntry entry)
     {
-        // First in the column can always be bought
         if (entry.tierIndex == 0)
             return true;
 
-        // For tier n, require tiers 0..(n-1) of the same type to be purchased
         for (int i = 0; i < entry.tierIndex; i++)
         {
             var prev = GetWeaponByTypeAndTier(entry.type, i);
@@ -238,6 +220,35 @@ public class ShopUIManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    void ApplyWeaponDamageBonus(WeaponEntry entry)
+    {
+        if (playerData == null) return;
+
+        int tier = entry.tierIndex + 1;
+
+        float mult = 1f + 0.2f * tier;
+
+        switch (entry.type)
+        {
+            case WeaponType.Sword:
+                playerData.SetMeleeDamageMult(mult);
+                PlayerPrefs.SetFloat(Key_MeleeMult, mult);
+                break;
+
+            case WeaponType.Bow:
+                playerData.SetRangedDamageMult(mult);
+                PlayerPrefs.SetFloat(Key_RangedMult, mult);
+                break;
+
+            case WeaponType.Staff:
+                playerData.SetMagicDamageMult(mult);
+                PlayerPrefs.SetFloat(Key_MagicMult, mult);
+                break;
+        }
+
+        PlayerPrefs.Save();
     }
 
     WeaponEntry GetWeaponByTypeAndTier(WeaponType type, int tierIndex)
@@ -278,35 +289,20 @@ public class ShopUIManager : MonoBehaviour
             if (purchased)
             {
                 if (equipped == item)
-                {
-                    // Latest purchased of this type = equipped
                     card.SetAsEquipped();
-                }
                 else
-                {
-                    // Previously purchased in this type = locked with icon
                     card.SetAsLockedPurchased();
-                }
             }
             else
             {
                 if (canBuy)
-                {
-                    // Next available in the chain
                     card.SetAsBuyable();
-                }
                 else
-                {
-                    // Can't buy yet – locked behind earlier tiers
                     card.SetAsLockedNotAvailable();
-                }
             }
         }
     }
 
-    // =======================
-    // SAVE / LOAD SHOP STATE
-    // =======================
     void SaveShopProgress()
     {
         if (weapons == null || weapons.Count == 0)
@@ -326,7 +322,6 @@ public class ShopUIManager : MonoBehaviour
 
         PlayerPrefs.SetString(SaveKey_ShopWeapons, sb.ToString());
         PlayerPrefs.Save();
-        // Debug.Log($"Saved shop purchases: {sb}");
     }
 
     void LoadShopProgress()
@@ -335,23 +330,21 @@ public class ShopUIManager : MonoBehaviour
         equippedByType.Clear();
 
         string data = PlayerPrefs.GetString(SaveKey_ShopWeapons, string.Empty);
-        if (string.IsNullOrEmpty(data))
-            return;
-
-        int len = Mathf.Min(data.Length, weapons.Count);
-        for (int i = 0; i < len; i++)
+        if (!string.IsNullOrEmpty(data))
         {
-            if (data[i] == '1')
+            int len = Mathf.Min(data.Length, weapons.Count);
+            for (int i = 0; i < len; i++)
             {
-                var w = weapons[i];
-                if (w != null && w.item != null)
+                if (data[i] == '1')
                 {
-                    purchasedWeapons.Add(w.item);
+                    var w = weapons[i];
+                    if (w != null && w.item != null)
+                        purchasedWeapons.Add(w.item);
                 }
             }
         }
 
-        // Rebuild equippedByType: highest tier purchased of each type becomes equipped
+        // Determine equipped as best purchased tier per type
         foreach (WeaponType type in System.Enum.GetValues(typeof(WeaponType)))
         {
             ShopItemSO best = null;
@@ -371,25 +364,55 @@ public class ShopUIManager : MonoBehaviour
             }
 
             if (best != null)
-            {
                 equippedByType[type] = best;
+
+            // apply multiplier to Player based on best tier 
+            if (bestTier >= 0 && playerData != null)
+            {
+                float mult = 1f + 0.2f * (bestTier + 1);
+
+                switch (type)
+                {
+                    case WeaponType.Sword:
+                        playerData.SetMeleeDamageMult(mult);
+                        PlayerPrefs.SetFloat(Key_MeleeMult, mult);
+                        break;
+                    case WeaponType.Bow:
+                        playerData.SetRangedDamageMult(mult);
+                        PlayerPrefs.SetFloat(Key_RangedMult, mult);
+                        break;
+                    case WeaponType.Staff:
+                        playerData.SetMagicDamageMult(mult);
+                        PlayerPrefs.SetFloat(Key_MagicMult, mult);
+                        break;
+                }
             }
         }
+
+        PlayerPrefs.Save();
     }
 
-    // =======================
-    // RESET SHOP (UI BUTTON)
-    // =======================
     public void ResetWeaponPurchases()
     {
         purchasedWeapons.Clear();
         equippedByType.Clear();
 
         PlayerPrefs.DeleteKey(SaveKey_ShopWeapons);
+
+        // Reset multipliers
+        PlayerPrefs.SetFloat(Key_MeleeMult, 1f);
+        PlayerPrefs.SetFloat(Key_RangedMult, 1f);
+        PlayerPrefs.SetFloat(Key_MagicMult, 1f);
         PlayerPrefs.Save();
 
-        RefreshAllWeaponCards();
+        if (playerData != null)
+        {
+            playerData.SetMeleeDamageMult(1f);
+            playerData.SetRangedDamageMult(1f);
+            playerData.SetMagicDamageMult(1f);
+        }
 
+        RefreshAllWeaponCards();
         Debug.Log("Shop weapon purchases reset.");
     }
 }

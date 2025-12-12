@@ -7,18 +7,22 @@ public class ProgressionTreeUI : MonoBehaviour
     private const string SaveKey_Progression = "ProgressionTree_Unlocked";
 
     [Header("Data")]
-    public List<ProgressionNodeSO> nodes = new();  // all nodes in the tree
-    public Experience experience;                  // GameSystems (Experience)
-    public TMP_Text xpText;                        // header text "XP: ###"
+    public List<ProgressionNodeSO> nodes = new();  
+    public Experience experience;                 
+    public TMP_Text xpText;                        
 
     [Header("Wiring")]
-    public ProgressionNodeCard nodePrefab;         // Prefabs/UI/ProgressionNodeCard
+    public ProgressionNodeCard nodePrefab;         
 
-    // Four columns in the progression tree (Content/Column1..Column4)
+    // Four columns in the progression tree 
     public Transform column1;
     public Transform column2;
     public Transform column3;
     public Transform column4;
+
+    [Header("Passive Bonuses")]
+    [Tooltip("Optional: if assigned, will recalc passive multipliers whenever progression is loaded/unlocked.")]
+    public PassiveBonusManager passiveBonusManager;
 
     // runtime state
     private HashSet<ProgressionNodeSO> unlocked = new();
@@ -26,17 +30,20 @@ public class ProgressionTreeUI : MonoBehaviour
 
     void Start()
     {
-        // If you later add XP save/load, you could call experience.LoadXP() here.
         LoadProgress();
+
+        RecalculatePassives();
 
         RefreshXP();
         BuildTree();
         RefreshUI();
     }
 
-    // =============================
-    // BUILD THE TREE
-    // =============================
+    public List<ProgressionNodeSO> GetUnlockedNodes()
+    {
+        return new List<ProgressionNodeSO>(unlocked);
+    }
+
     void BuildTree()
     {
         ClearColumns();
@@ -50,7 +57,6 @@ public class ProgressionTreeUI : MonoBehaviour
             if (parent == null) continue;
 
             var card = Instantiate(nodePrefab, parent);
-            // Bind with callback; visual state will be set in RefreshUI()
             card.Bind(node, HandleUnlock);
 
             spawnedCards.Add(card);
@@ -87,9 +93,6 @@ public class ProgressionTreeUI : MonoBehaviour
         };
     }
 
-    // =============================
-    // UNLOCK LOGIC
-    // =============================
     void HandleUnlock(ProgressionNodeSO node)
     {
         if (node == null) return;
@@ -109,6 +112,8 @@ public class ProgressionTreeUI : MonoBehaviour
             unlocked.Add(node);
             SaveProgress();
 
+            RecalculatePassives();
+
             RefreshXP();
             RefreshUI();
         }
@@ -118,14 +123,13 @@ public class ProgressionTreeUI : MonoBehaviour
         }
     }
 
-    // Tier logic: must unlock all earlier tiers in the same column
+    // must unlock all earlier tiers in the same column
     bool CanUnlock(ProgressionNodeSO node)
     {
-        // Tier 0 is always allowed (XP permitting)
+        // Tier 0 is always allowed 
         if (node.tierIndex == 0)
             return true;
 
-        // For tier n, require tiers 0..(n-1) in same column to be unlocked
         for (int i = 0; i < node.tierIndex; i++)
         {
             var prev = GetNode(node.columnIndex, i);
@@ -147,9 +151,6 @@ public class ProgressionTreeUI : MonoBehaviour
         return null;
     }
 
-    // =============================
-    // SAVE / LOAD
-    // =============================
     void SaveProgress()
     {
         if (nodes == null || nodes.Count == 0)
@@ -168,7 +169,6 @@ public class ProgressionTreeUI : MonoBehaviour
 
         PlayerPrefs.SetString(SaveKey_Progression, sb.ToString());
         PlayerPrefs.Save();
-        // Debug.Log($"Saved progression: {sb}");
     }
 
     void LoadProgress()
@@ -187,13 +187,16 @@ public class ProgressionTreeUI : MonoBehaviour
                 unlocked.Add(nodes[i]);
             }
         }
-
-        // Debug.Log($"Loaded progression: {data}");
     }
 
-    // =============================
-    // UI REFRESH
-    // =============================
+    void RecalculatePassives()
+    {
+        if (passiveBonusManager == null) return;
+
+        var unlockedList = new List<ProgressionNodeSO>(unlocked);
+        passiveBonusManager.Recalculate(unlockedList);
+    }
+
     void RefreshUI()
     {
         foreach (var card in spawnedCards)
@@ -234,205 +237,18 @@ public class ProgressionTreeUI : MonoBehaviour
 
     public void ResetProgression()
     {
-        // Clear runtime state
         unlocked.Clear();
 
-        // Remove saved data
-        PlayerPrefs.DeleteKey("ProgressionTree_Unlocked");
+        PlayerPrefs.DeleteKey(SaveKey_Progression);
         PlayerPrefs.Save();
 
-        // Rebuild visuals to reflect locked state
+        RecalculatePassives();
+
         RefreshUI();
 
         Debug.Log("Progression tree reset.");
     }
-
 }
 
 
 
-//using UnityEngine;
-//using System.Collections.Generic;
-//using TMPro;
-
-//public class ProgressionTreeUI : MonoBehaviour
-//{
-//    [Header("Data")]
-//    public List<ProgressionNodeSO> nodes = new();  // all nodes in the tree
-//    public Experience experience;                  // GameSystems (Experience)
-//    public TMP_Text xpText;                        // header text "XP: ###"
-
-//    [Header("Wiring")]
-//    public ProgressionNodeCard nodePrefab;         // Prefabs/UI/ProgressionNodeCard
-
-//    // Five columns in the progression tree (Content/Column1..Column5)
-//    public Transform column1;
-//    public Transform column2;
-//    public Transform column3;
-//    public Transform column4;
-//    public Transform column5;
-
-//    // runtime state
-//    private HashSet<ProgressionNodeSO> unlocked = new();
-//    private List<ProgressionNodeCard> spawnedCards = new();
-
-//    void Start()
-//    {
-//        RefreshXP();
-//        BuildTree();
-//        RefreshUI();
-//    }
-
-//    // =============================
-//    // BUILD THE TREE
-//    // =============================
-//    void BuildTree()
-//    {
-//        ClearColumns();
-//        spawnedCards.Clear();
-
-//        foreach (var node in nodes)
-//        {
-//            if (node == null) continue;
-
-//            Transform parent = GetColumn(node.columnIndex);
-//            if (parent == null) continue;
-
-//            var card = Instantiate(nodePrefab, parent);
-//            // Bind with callback; visual state will be set in RefreshUI()
-//            card.Bind(node, HandleUnlock);
-
-//            spawnedCards.Add(card);
-//        }
-//    }
-
-//    void ClearColumns()
-//    {
-//        ClearColumn(column1);
-//        ClearColumn(column2);
-//        ClearColumn(column3);
-//        ClearColumn(column4);
-//        ClearColumn(column5);
-//    }
-
-//    void ClearColumn(Transform t)
-//    {
-//        if (!t) return;
-
-//        foreach (Transform child in t)
-//        {
-//            Destroy(child.gameObject);
-//        }
-//    }
-
-//    Transform GetColumn(int index)
-//    {
-//        return index switch
-//        {
-//            0 => column1,
-//            1 => column2,
-//            2 => column3,
-//            3 => column4,
-//            _ => null
-//        };
-//    }
-
-//    // =============================
-//    // UNLOCK LOGIC
-//    // =============================
-//    void HandleUnlock(ProgressionNodeSO node)
-//    {
-//        if (node == null) return;
-//        if (unlocked.Contains(node)) return;
-//        if (!experience) return;
-
-//        // Check tier progression first
-//        if (!CanUnlock(node))
-//        {
-//            Debug.Log($"Cannot unlock {node.displayName} yet – unlock earlier tiers in this column first.");
-//            return;
-//        }
-
-//        // Check XP cost
-//        if (experience.TrySpend(node.cost))
-//        {
-//            unlocked.Add(node);
-//            RefreshXP();
-//            RefreshUI();
-//        }
-//        else
-//        {
-//            Debug.Log($"Not enough XP to unlock {node.displayName}");
-//        }
-//    }
-
-//    // Tier logic: must unlock all earlier tiers in the same column
-//    bool CanUnlock(ProgressionNodeSO node)
-//    {
-//        // Tier 0 is always allowed (xp permitting)
-//        if (node.tierIndex == 0)
-//            return true;
-
-//        // For tier n, require tiers 0..(n-1) in same column to be unlocked
-//        for (int i = 0; i < node.tierIndex; i++)
-//        {
-//            var prev = GetNode(node.columnIndex, i);
-//            if (prev == null || !unlocked.Contains(prev))
-//                return false;
-//        }
-
-//        return true;
-//    }
-
-//    ProgressionNodeSO GetNode(int columnIndex, int tierIndex)
-//    {
-//        foreach (var n in nodes)
-//        {
-//            if (n == null) continue;
-//            if (n.columnIndex == columnIndex && n.tierIndex == tierIndex)
-//                return n;
-//        }
-//        return null;
-//    }
-
-//    // =============================
-//    // UI REFRESH
-//    // =============================
-//    void RefreshUI()
-//    {
-//        foreach (var card in spawnedCards)
-//        {
-//            if (card == null) continue;
-
-//            var node = card.Node;
-//            if (node == null)
-//            {
-//                card.SetAsLockedNotAvailable();
-//                continue;
-//            }
-
-//            bool isUnlocked = unlocked.Contains(node);
-//            bool canUnlockByTier = CanUnlock(node);
-//            bool hasEnoughXP = experience == null || experience.XP >= node.cost; // optional XP gating for "Unlock" state
-
-//            if (isUnlocked)
-//            {
-//                card.SetAsUnlocked();
-//            }
-//            else if (canUnlockByTier && hasEnoughXP)
-//            {
-//                card.SetAsUnlockable();
-//            }
-//            else
-//            {
-//                card.SetAsLockedNotAvailable();
-//            }
-//        }
-//    }
-
-//    void RefreshXP()
-//    {
-//        if (xpText && experience)
-//            xpText.text = $"XP: {experience.XP}";
-//    }
-//}
