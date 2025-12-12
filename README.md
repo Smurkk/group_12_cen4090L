@@ -10,7 +10,7 @@ Play as a janitor who's hired to clean up dungeons after previous adventurer's a
 
 ### Architecture Overview
 
-![Image helping visualization]()
+[Document showing flow](/DungeonJanitorCEN4090L/ABILITIES.md)
 
 ## Some title
 
