@@ -736,6 +736,75 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 104434cad52402543830dacd34389081, type: 2}
   healthBar: {fileID: 449814296}
   playerTransform: {fileID: 1632729602}
+--- !u!1 &847963274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 847963276}
+  - component: {fileID: 847963275}
+  m_Layer: 0
+  m_Name: PassiveBonusManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &847963275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847963274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3875c1a1e79f34dbacbcb3f5f8631a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allNodes:
+  - {fileID: 11400000, guid: 73a66945507a4e44aafabec1876b6c9d, type: 2}
+  - {fileID: 11400000, guid: e95b195955e31874c905acc73bc595d5, type: 2}
+  - {fileID: 11400000, guid: a2b372c358558ed41a1b88f4834f85ca, type: 2}
+  - {fileID: 11400000, guid: aaa6f04f914a84842857f08cc881c5a7, type: 2}
+  - {fileID: 11400000, guid: dd0fb20c433a05a40b54a060355eba8d, type: 2}
+  - {fileID: 11400000, guid: 7a3e54b9908bd29489fc75cd2db8c0c9, type: 2}
+  - {fileID: 11400000, guid: 9e6a5aa2d50e3244d992d21f14a59c1b, type: 2}
+  - {fileID: 11400000, guid: 70b0fe2703e8ed0449bff9006800c60c, type: 2}
+  - {fileID: 11400000, guid: 93cbc41274f1b4e48aac86d02a23614e, type: 2}
+  - {fileID: 11400000, guid: 3dd59bce086d0cf4f9c1f6fd18a6eca6, type: 2}
+  - {fileID: 11400000, guid: b10c8966f85a2bb40b14c7b0a744f377, type: 2}
+  - {fileID: 11400000, guid: 8065374a7d7f6e24ab184ea8258e11de, type: 2}
+  - {fileID: 11400000, guid: 60b5454b075046743b7cd748cde65aff, type: 2}
+  - {fileID: 11400000, guid: 6ab3466e3c9df2940a78ad712edeaf42, type: 2}
+  - {fileID: 11400000, guid: e8d1f12dd00144244ae9498cdd55db46, type: 2}
+  - {fileID: 11400000, guid: 621dee966b009b3489bb11361f9138db, type: 2}
+  - {fileID: 11400000, guid: 9e01ece6b09037e47a02b7f00a0982de, type: 2}
+  - {fileID: 11400000, guid: 2a8d92129c2bebc458a2f4485e45b113, type: 2}
+  - {fileID: 11400000, guid: 373571758a9937e4cb38a9548bfa0ed1, type: 2}
+  - {fileID: 11400000, guid: 53d157c3471d62d45b9ce2938cefc2f4, type: 2}
+  damageMult: 1
+  healthMult: 1
+  speedMult: 1
+  goldMult: 1
+--- !u!4 &847963276
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847963274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 380.7573, y: 303.837, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &901961535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,3 +1846,4 @@ SceneRoots:
   - {fileID: 1050911347}
   - {fileID: 1612257231}
   - {fileID: 1282910166}
+  - {fileID: 847963276}

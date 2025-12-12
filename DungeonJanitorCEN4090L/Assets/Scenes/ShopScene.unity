@@ -554,6 +554,7 @@ MonoBehaviour:
   swordColumn: {fileID: 1843546780}
   bowColumn: {fileID: 908116990}
   staffColumn: {fileID: 1091433242}
+  playerData: {fileID: 11400000, guid: 104434cad52402543830dacd34389081, type: 2}
   weapons:
   - item: {fileID: 11400000, guid: fd5a95fdc1dbbfb46b4942e9dbdffc04, type: 2}
     type: 0
