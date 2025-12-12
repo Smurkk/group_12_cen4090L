@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c344d762366e3a045a8a3bbb76ee70ab
   - enabled: 1
-    path: Assets/Scenes/PlayerTesting.unity
+    path: Assets/Scenes/old_PlayerTesting.unity
     guid: 48b5afbaaa64b684c908a48ab2e823ab
   - enabled: 1
     path: Assets/Scenes/OptionScreen.unity
