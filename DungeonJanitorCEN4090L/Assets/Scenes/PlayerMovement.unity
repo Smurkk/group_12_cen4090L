@@ -1664,6 +1664,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 2927899565980468117, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1709,9 +1713,6 @@ PrefabInstance:
       addedObject: {fileID: 7181714205612376740}
     - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7181714205612376744}
-    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7181714205612376747}
     - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       insertIndex: -1
@@ -1722,6 +1723,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7181714205612376748}
+    - targetCorrespondingSourceObject: {fileID: 2331311998712916777, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7181714205612376751}
   m_SourcePrefab: {fileID: 100100000, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
 --- !u!114 &7181714205612376740
 MonoBehaviour:
@@ -1735,8 +1739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3e26401205f4e43a462ae2063477f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedAbility: {fileID: 0}
-  castPoint: {fileID: 0}
+  castPoint: {fileID: 1173508149}
   projectileLifetime: 0
 --- !u!114 &7181714205612376741
 MonoBehaviour:
@@ -1790,20 +1793,6 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7181714205612376744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 779781982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c5504519394af842a70f1c13ac91389, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityUser: {fileID: 7181714205612376740}
-  castPoint: {fileID: 1173508149}
 --- !u!4 &7181714205612376746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 28750492820294860, guid: 96503d39826870746b0cb23dc717eb46, type: 3}
@@ -1890,6 +1879,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68be7b2d519c93a4da9e1b6102bfbb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7181714205612376751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779781982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec5b1fc215632d40a3d1dc98fcbac98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 104434cad52402543830dacd34389081, type: 2}
+  manaManager: {fileID: 7181714205612376741}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

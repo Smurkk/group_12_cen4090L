@@ -38,6 +38,7 @@ public class HealthComponent : MonoBehaviour, IHealth
             return;
         }
         playerData.Initialize();
+        playerData.ApplyPassiveStats();
     }
     private void Start()
     {

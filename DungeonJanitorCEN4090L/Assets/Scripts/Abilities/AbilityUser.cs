@@ -1,80 +1,59 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ResourceManager))]
 public class AbilityUser : MonoBehaviour
 {
-    [SerializeField] private AbilityDefinition equippedAbility;
     [SerializeField] private Transform castPoint;
-    [SerializeField] private float projectileLifetime;
-
-    private ResourceManager resourceManager;
-    private float cooldownTimer;
+    [SerializeField] private float projectileLifetime = 5f;
 
     private void Awake()
     {
-        resourceManager = GetComponent<ResourceManager>();
-        if (castPoint == null) castPoint = this.transform;
+        if (castPoint == null)
+            castPoint = transform;
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
-
-        // temp input for testing
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TryUseEquippedAbility();
-        }
+        AbilityManager.OnAbilityRequested += ExecuteAbility;
     }
 
-    public void SetEquippedAbility(AbilityDefinition ability)
+    private void OnDisable()
     {
-        equippedAbility = ability;
+        AbilityManager.OnAbilityRequested -= ExecuteAbility;
     }
 
-    public bool TryUseEquippedAbility()
+    /// <summary>
+    /// Executes the ability based on its targeting type.
+    /// Called via event from AbilityManager after validation passes.
+    /// </summary>
+    public void ExecuteAbility(AbilityDefinition ability)
     {
-        if (equippedAbility == null)
+        if (ability == null)
         {
-            Debug.LogWarning("No equipped ability");
-            return false;
+            Debug.LogWarning("ExecuteAbility: Received null ability");
+            return;
         }
 
-        if (cooldownTimer > 0f)
-        {
-            Debug.Log($"{equippedAbility.Name} is on cooldown. Current timer status: {cooldownTimer}");
-            return false;
-        }
-
-        if (!resourceManager.HasSufficientResources(equippedAbility.ResourceCost))
-        {
-            Debug.Log("Not enough resource");
-            return false;
-        }
-
-        // pay resource and start cooldown
-        resourceManager.SpendResource(equippedAbility.ResourceCost);
-        cooldownTimer = equippedAbility.Cooldown;
-
-        switch (equippedAbility.Targeting)
+        switch (ability.Targeting)
         {
             case TargetingType.Projectile:
-                LaunchProjectileAbility(equippedAbility);
+                ExecuteProjectileAbility(ability);
                 break;
             case TargetingType.RaycastSingle:
-                // you could implement raycast-target instant hit abilities
+                ExecuteRaycastSingleAbility(ability);
                 break;
             case TargetingType.Self:
-                // apply effects to self
-                ApplyEffectsToTarget(this.gameObject, equippedAbility.Effects);
+                ExecuteSelfAbility(ability);
                 break;
-                // area, point, etc.
+            case TargetingType.AreaOfEffect:
+                ExecuteAreaOfEffectAbility(ability);
+                break;
+            default:
+                Debug.LogWarning($"Unknown targeting type: {ability.Targeting}");
+                break;
         }
-
-        return true;
     }
 
-    private void LaunchProjectileAbility(AbilityDefinition ability)
+    private void ExecuteProjectileAbility(AbilityDefinition ability)
     {
         if (ability.ProjectilePrefab == null)
         {
@@ -82,9 +61,9 @@ public class AbilityUser : MonoBehaviour
             return;
         }
 
-        // instantiate projectile
         GameObject projGO = Instantiate(ability.ProjectilePrefab, castPoint.position, castPoint.rotation);
         var proj = projGO.GetComponent<Projectile>();
+
         if (proj == null)
         {
             Debug.LogError("Projectile prefab requires a Projectile component.");
@@ -92,15 +71,49 @@ public class AbilityUser : MonoBehaviour
             return;
         }
 
-        // configure projectile runtime params (speed comes from ability so it's modifiable per-ability)
-        proj.Caster = this.gameObject;
+        proj.Caster = gameObject;
         proj.Speed = ability.ProjectileSpeed;
         proj.Lifetime = projectileLifetime;
         proj.Effects = ability.Effects;
         proj.HitLayers = ability.HitLayers;
     }
 
-    private void ApplyEffectsToTarget(GameObject target, EffectDefinition[] effects)
+    private void ExecuteRaycastSingleAbility(AbilityDefinition ability)
+    {
+        float range = ability.Range ?? 100f;
+
+        if (Physics.Raycast(castPoint.position, castPoint.forward, out RaycastHit hit, range, ability.HitLayers))
+        {
+            ApplyEffectsToTarget(hit.collider.gameObject, ability.Effects, hit.point);
+        }
+        else
+        {
+            Debug.Log($"{ability.Name}: No target hit");
+        }
+    }
+
+    private void ExecuteSelfAbility(AbilityDefinition ability)
+    {
+        ApplyEffectsToTarget(gameObject, ability.Effects, transform.position);
+    }
+
+    private void ExecuteAreaOfEffectAbility(AbilityDefinition ability)
+    {
+        float range = ability.Range ?? 5f;
+        Collider[] hits = Physics.OverlapSphere(castPoint.position, range, ability.HitLayers);
+
+        foreach (Collider hit in hits)
+        {
+            ApplyEffectsToTarget(hit.gameObject, ability.Effects, hit.transform.position);
+        }
+
+        if (hits.Length == 0)
+        {
+            Debug.Log($"{ability.Name}: No targets in AOE range");
+        }
+    }
+
+    private void ApplyEffectsToTarget(GameObject target, EffectDefinition[] effects, Vector3 hitPoint = default)
     {
         if (effects == null || target == null) return;
 
@@ -108,7 +121,7 @@ public class AbilityUser : MonoBehaviour
         {
             if (ed == null || ed.effect == null) continue;
             var runtimeEffect = ed.effect.CreateEffectInstance();
-            runtimeEffect.Apply(this, target, ed, target.transform.position);
+            runtimeEffect.Apply(this, target, ed, hitPoint);
         }
     }
 }
