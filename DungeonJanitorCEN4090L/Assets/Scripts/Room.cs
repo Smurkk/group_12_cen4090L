@@ -1,23 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Room : MonoBehaviour
+public class Room : MonoBehaviour 
 {
     public List<Enemy> enemiesInRoom = new List<Enemy>();
     
     private void Start()
     {
-        // Auto-find enemies when game starts if list is empty
         if (enemiesInRoom.Count == 0)
         {
             FindEnemiesInRoom();
         }
-    }  
-        
-    
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
+    {        
         if (collision.CompareTag("Player"))
         {
             ActivateEnemies();
@@ -33,7 +30,7 @@ public class Room : MonoBehaviour
     }
 
     private void ActivateEnemies()
-    {
+    {        
         foreach (Enemy enemy in enemiesInRoom)
         {
             if (enemy != null)
@@ -54,21 +51,28 @@ public class Room : MonoBehaviour
         }
     }
     
- [ContextMenu("Find Enemies In Room")]
+    [ContextMenu("Find Enemies In Room")]
     public void FindEnemiesInRoom()
     {
         enemiesInRoom.Clear();
         
-        // Find ALL enemy scripts (Skeleton, Spider, etc. all inherit from Enemy)
-        Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);        BoxCollider2D roomCollider = GetComponent<BoxCollider2D>();
-                
+        Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+        BoxCollider2D roomCollider = GetComponent<BoxCollider2D>();
+        
         if (roomCollider != null)
         {
+            // Get the actual world-space bounds
+            Bounds bounds = roomCollider.bounds;
+           
             foreach (Enemy enemy in allEnemies)
             {
-                Vector2 enemyPos = enemy.transform.position;
-                bool isInside = roomCollider.bounds.Contains(enemyPos);
-                                
+                Vector2 enemyPos2D = new Vector2(enemy.transform.position.x, enemy.transform.position.y);
+                
+                // Manual bounds check (more reliable)
+                bool isInsideX = enemyPos2D.x >= bounds.min.x && enemyPos2D.x <= bounds.max.x;
+                bool isInsideY = enemyPos2D.y >= bounds.min.y && enemyPos2D.y <= bounds.max.y;
+                bool isInside = isInsideX && isInsideY;
+                
                 if (isInside)
                 {
                     enemiesInRoom.Add(enemy);

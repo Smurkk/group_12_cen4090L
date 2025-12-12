@@ -1,8 +1,6 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour 
 {
     [Header("Stats")]
     public float maxHealth = 100f;
@@ -23,7 +21,7 @@ public class Enemy : MonoBehaviour
     [Header("Combat")]
     public float attackCooldown = 1.5f;
     public bool isRoomActive = false;
-    private float lastAttackTime;
+    protected float lastAttackTime;
     
     protected Rigidbody2D rb;
     protected SpriteRenderer spriteRenderer;
@@ -36,8 +34,6 @@ public class Enemy : MonoBehaviour
     private Vector2 patrolTarget;
     private float patrolWaitTimer;
     private Vector2 spawnPoint;
-
-    public healthBar healthBar;
     
     protected virtual void Start()
     {
@@ -47,10 +43,15 @@ public class Enemy : MonoBehaviour
         spawnPoint = transform.position;
         
         // Finds the player
-        GameObject playerObj = GameObject.FindWithTag("Player");
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
             player = playerObj.transform;
+            Debug.Log($"{gameObject.name} found player at {player.position}");
+        }
+        else
+        {
+            Debug.LogError($"{gameObject.name} could NOT find player! Make sure player has 'Player' tag.");
         }
         
         if (shouldPatrol)
@@ -63,6 +64,12 @@ public class Enemy : MonoBehaviour
     {
         if (currentState == EnemyState.Dead) return;
         
+        if (player == null)
+        {
+            Debug.LogError($"{gameObject.name} has no player reference!");
+            return;
+        }
+        
         // Only act if the room is active
         if (!isRoomActive)
         {
@@ -73,8 +80,7 @@ public class Enemy : MonoBehaviour
         
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         
-        
-        // Room is active - chase player
+        // Room is active - chase player (with buffer for collision)
         if (distanceToPlayer <= attackRange + 0.5f)
         {
             currentState = EnemyState.Attack;
@@ -92,7 +98,6 @@ public class Enemy : MonoBehaviour
             spriteRenderer.flipX = rb.linearVelocity.x < 0;
         }
     }
-
     
     protected virtual void Patrol()
     {
@@ -112,19 +117,20 @@ public class Enemy : MonoBehaviour
         else
         {
             Vector2 direction = (patrolTarget - (Vector2)transform.position).normalized;
-            rb.linearVelocity = direction * moveSpeed * 0.5f; // Patrol slower than chase
+            rb.linearVelocity = direction * moveSpeed * 0.5f;
         }
     }
     
     protected virtual void ChasePlayer()
     {
+        if (player == null) return;
         Vector2 direction = (player.position - transform.position).normalized;
         rb.linearVelocity = direction * moveSpeed;
     }
     
-   protected virtual void AttackPlayer()
+    protected virtual void AttackPlayer()
     {
-        rb.linearVelocity = Vector2.zero;  // ← This stops the enemy
+        rb.linearVelocity = Vector2.zero;
         
         if (Time.time >= lastAttackTime + attackCooldown)
         {
@@ -133,45 +139,40 @@ public class Enemy : MonoBehaviour
         }
     }
     
-   protected virtual void PerformAttack()
+    protected virtual void PerformAttack()
     {
-        // Goes to damage the player
+        if (player == null) return;
+        
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damage);
-            
-
         }
     }
     
     public virtual void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
-
-        // Reflects damage done to health bar
-        healthBar.SetHealth(Convert.ToInt32(currentHealth));
-
-        // Flashing red if damaged
+        
         StartCoroutine(DamageFlash());
         
         if (currentHealth <= 0)
         {
-            //Die();
+            Die();
         }
     }
     
     public void SetRoomActive(bool active)
     {
         isRoomActive = active;
+        Debug.Log($"{gameObject.name} - isRoomActive set to: {active}");
     }
-    /*
+    
     protected virtual void Die()
     {
         currentState = EnemyState.Dead;
         
-        // Notify respawn manager
-        //EnemyRespawnManager respawnManager = FindAnyObjectByType<EnemyRespawnManager>();
+        EnemyRespawnManager respawnManager = FindAnyObjectByType<EnemyRespawnManager>();
         if (respawnManager != null)
         {
             respawnManager.OnEnemyDied(this);
@@ -179,10 +180,10 @@ public class Enemy : MonoBehaviour
         
         Destroy(gameObject);
     }
-    */
+    
     private void SetNewPatrolTarget()
     {
-        Vector2 randomDirection = UnityEngine.Random.insideUnitCircle * patrolRadius;
+        Vector2 randomDirection = Random.insideUnitCircle * patrolRadius;
         patrolTarget = spawnPoint + randomDirection;
     }
     
@@ -193,18 +194,14 @@ public class Enemy : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
     
-    // Visual debugging
     protected virtual void OnDrawGizmosSelected()
     {
-        // Detection range
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
         
-        // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
         
-        // Patrol radius
         if (shouldPatrol)
         {
             Gizmos.color = Color.blue;
