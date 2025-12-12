@@ -12,10 +12,7 @@ public class DamageEffect : IEffect
         var health = target.GetComponent<HealthComponent>();
         if (health == null) return;
 
-        float casterPower = 0f;
-        if (caster != null) casterPower = caster.AbilityPower;
-
-        float finalDamage = def.magnitude + casterPower * def.scalingFactor;
+        int finalDamage = (int)def.GetScaledMagnitude();
 
         health.TakeDamage(finalDamage);
 

@@ -7,8 +7,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform  castPoint; // optional, can assign via AbilityUser
 
     private PlayerInput playerInput;
-    private InputAction fireballAction;
-    private InputAction healAction;
+
+
+    private InputAction ability1Action;
+    private InputAction ability2Action;
+    private InputAction ability3Action;
 
     private void Awake()
     {
@@ -22,23 +25,30 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        fireballAction = playerInput.actions["UseAbility"]; 
-        fireballAction.performed += OnFireballPerformed;
+        
+        ability1Action = playerInput.actions["UseAbility1"]; 
+        ability1Action.performed += OnFireballPerformed;
 
-        healAction = playerInput.actions["Heal"];
-        healAction.performed += OnHealPerformed;
+        ability2Action = playerInput.actions["UseAbility2"];
+        ability2Action.performed += OnHealPerformed;
+
+        ability3Action = playerInput.actions["UseAbility3"];
+        ability3Action.performed += OnHealPerformed;
+
     }
 
     private void OnEnable()
     {
-        fireballAction?.Enable();
-        healAction?.Enable();
+        ability1Action?.Enable();
+        ability2Action?.Enable();
+        ability3Action?.Enable();
     }
 
     private void OnDisable()
     {
-        fireballAction?.Disable();
-        healAction?.Disable();
+        ability1Action?.Disable();
+        ability2Action?.Disable();
+        ability3Action?.Disable();
     }
 
     private void OnFireballPerformed(InputAction.CallbackContext context)

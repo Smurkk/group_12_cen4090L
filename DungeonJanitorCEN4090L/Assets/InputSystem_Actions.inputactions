@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseAbility",
+                    "name": "UseAbility1",
                     "type": "Button",
                     "id": "f4683f78-54a2-451e-a735-1e20a6b3891b",
                     "expectedControlType": "",
@@ -96,9 +96,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Heal",
+                    "name": "UseAbility2",
                     "type": "Button",
                     "id": "8589fb59-d2ad-4931-b370-e0ccdafa6b2e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseAbility3",
+                    "type": "Button",
+                    "id": "554c9c9b-dc05-46d0-8e87-ca67227a71aa",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -498,18 +507,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UseAbility",
+                    "action": "UseAbility1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "6684d8d9-9187-4bd5-a55e-14c3c2acfa7a",
-                    "path": "<Keyboard>/h",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Heal",
+                    "action": "UseAbility2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db93b3fb-3600-43df-a476-e8272d9331f2",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseAbility3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
