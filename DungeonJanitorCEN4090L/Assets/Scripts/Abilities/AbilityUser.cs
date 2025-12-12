@@ -10,8 +10,6 @@ public class AbilityUser : MonoBehaviour
     private ResourceManager resourceManager;
     private float cooldownTimer;
 
-    public float AbilityPower; 
-
     private void Awake()
     {
         resourceManager = GetComponent<ResourceManager>();

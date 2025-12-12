@@ -5,7 +5,7 @@ public class HealEffect : IEffect
 {
     public void Apply(AbilityUser caster, GameObject target, EffectDefinition def, Vector3 hitpoint)
     {
-        Debug.Log($"[HealEffect] Apply called! Target: {target?.name ?? "NULL"}");
+        //Debug.Log($"[HealEffect] Apply called! Target: {target?.name ?? "NULL"}");
         if (target == null || def == null)
         {
             Debug.LogWarning("HealEffect: Target or EffectDefinition is null.");
@@ -14,7 +14,7 @@ public class HealEffect : IEffect
 
         // Get the health component from the target
         HealthComponent healthComponent = target.GetComponent<HealthComponent>();
-        Debug.Log($"[HealEffect] HealthComponent found: {healthComponent != null}");
+        //Debug.Log($"[HealEffect] HealthComponent found: {healthComponent != null}");
         if (healthComponent == null)
         {
             Debug.LogWarning($"HealEffect: {target.name} does not have a HealthComponent.");
@@ -22,19 +22,13 @@ public class HealEffect : IEffect
         }
 
         float healAmount = def.GetScaledMagnitude();
-        Debug.Log($"[HealEffect] Healing {target.name} for {healAmount} HP");
-
-        // Apply scaling from caster's AbilityPower if needed
-        if (caster != null && caster.AbilityPower > 0f)
-        {
-            healAmount *= (1f + caster.AbilityPower / 100f);
-        }
+        //Debug.Log($"[HealEffect] Healing {target.name} for {healAmount} HP");
 
         // Instant heal
         if (def.duration <= 0f)
         {
             Debug.Log("[HealEffect] Instant heal");
-            healthComponent.Heal(healAmount);
+            healthComponent.Heal((int)healAmount);
         }
         // Heal over time
 
@@ -51,7 +45,7 @@ public class HealEffect : IEffect
                 Debug.Log($"[HealEffect] Heal over time: {healAmount} over {def.duration} seconds");
                 Debug.LogWarning("HealEffect: Cannot start HoT coroutine - target has no MonoBehaviour.");
                 // Fallback to instant heal
-                healthComponent.Heal(healAmount);
+                healthComponent.Heal((int)healAmount);
             }
         }
     }
@@ -67,14 +61,14 @@ public class HealEffect : IEffect
             if (healthComponent == null || healthComponent.IsDead)
                 yield break;
 
-            healthComponent.Heal(healPerTick);
+            healthComponent.Heal((int)healPerTick); // TODO: Might be a problem with rounding here
 
             yield return new WaitForSeconds(tickRate);
             elapsed += tickRate;
         }
 
         // Apply any remaining healing due to rounding
-        float remainingHeal = totalHealAmount - (healPerTick * Mathf.Floor(duration / tickRate));
+        int remainingHeal = (int)(totalHealAmount - (healPerTick * Mathf.Floor(duration / tickRate)));
         if (remainingHeal > 0f && healthComponent != null && !healthComponent.IsDead)
         {
             healthComponent.Heal(remainingHeal);
