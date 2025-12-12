@@ -16,7 +16,7 @@ MonoBehaviour:
   maxHealth: 100
   maxMana: 100
   CurrentHealth: 100
-  CurrentMana: 100
+  CurrentMana: 60
   Level: 1
   Experience: 0
   Damage: 0
@@ -24,7 +24,8 @@ MonoBehaviour:
   Speed: 0
   Weapon: {fileID: 11400000, guid: f3e85a9b1a30ffd4a8d4c8c0d44a72e8, type: 2}
   Armor: {fileID: 0}
+  maxAbilitySlots: 3
   equippedAbilities:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: b757ec8f21b40a74d9211e886b92563a, type: 2}
+  - {fileID: 11400000, guid: 88a59efb68eac854ea283e00f7e030cc, type: 2}
   - {fileID: 0}
