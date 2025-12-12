@@ -13,6 +13,7 @@ public class Tile
 
     // Retrieves ID of the Feature on the tile, returns 0 on no feature.
     public int FeatureID { get; set; }
+    public Room parentRoom;
     public Tile(int x, int y)
     {
         Position = new Vector2Int(x, y);

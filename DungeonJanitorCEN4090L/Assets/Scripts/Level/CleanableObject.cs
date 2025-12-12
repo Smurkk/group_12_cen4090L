@@ -11,8 +11,8 @@ public class CleanableObject : MonoBehaviour
     public Room parentRoom;
 
     public int experienceReward = 5;
-    [Header("UI Prompt")]
-    public TextMeshProUGUI promptText;
+    [Header("World Prompt")]
+    public TextMeshPro worldPromptPrefab;
     // I have this set to false to disable floating text by default.
     public bool useWorldSpacePrompt = false;
     
@@ -26,16 +26,6 @@ void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // If no prompt is assigned, automatically search for the prompt.
-        if (promptText == null)
-        {
-            GameObject promptObj = GameObject.Find("InteractionPrompt");
-            if (promptObj != null)
-            {
-                promptText = promptObj.GetComponent<TextMeshProUGUI>();
-            }
-        }
     }
     
     void Update()
@@ -125,35 +115,41 @@ void Start()
     }
     // Function to display the text prompt when a player can clean.
     private void ShowPrompt()
+{
+    if (useWorldSpacePrompt)
     {
-        if (useWorldSpacePrompt)
+        if (worldPrompt == null && worldPromptPrefab != null)
         {
-            // If the prompt is null, create and initialize it.
-            if (worldPrompt == null)
+            // Instantiate the 3D text
+            worldPrompt = Instantiate(worldPromptPrefab.gameObject, transform);
+            worldPrompt.transform.localPosition = new Vector3(0, 1f, 0); // raise above sprite
+            worldPrompt.transform.localRotation = Quaternion.identity;
+
+            // TMP 3D text is tiny by default; scale it up
+            worldPrompt.transform.localScale = Vector3.one * 0.2f;
+
+            // Set the text
+            TextMeshPro tmp = worldPrompt.GetComponent<TextMeshPro>();
+            if (tmp != null)
             {
-                worldPrompt = new GameObject("WorldPrompt");
-                worldPrompt.transform.SetParent(transform);
-                worldPrompt.transform.localPosition = new Vector3(0, 0.5f, 0);
-                WorldPrompt prompt = worldPrompt.AddComponent<WorldPrompt>();
-                prompt.SetText("Press E to clean!");
+                tmp.text = "Press E to clean!";
+                tmp.alignment = TextAlignmentOptions.Center;
+            }
+
+            // Make it face the main camera
+            if (Camera.main != null)
+            {
+                worldPrompt.transform.rotation = Quaternion.LookRotation(worldPrompt.transform.position - Camera.main.transform.position);
             }
         }
-        else if (promptText != null)
-        {
-            promptText.text = "Press E to clean!";
-            promptText.gameObject.SetActive(true);
-        }
     }
+}
     // Function to hide the prompt when player stops colliding with a mess.
     private void HidePrompt()
     {
         if (useWorldSpacePrompt && worldPrompt != null)
         {
             Destroy(worldPrompt);
-        }
-        else if (promptText != null)
-        {
-            promptText.gameObject.SetActive(false);
         }
     }
 }

@@ -5,7 +5,7 @@ public static class FeatureID
     public const int TABLE = 1;
     public const int WALL = 2;
     public const int DECORATION = 3;
-    public const int DOOR = 4;
+    public const int CARPET = 4;
     public const int CHAIR = 5;
     public const int CHEST = 6;
     // messes below

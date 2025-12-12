@@ -28,6 +28,7 @@ public class Room
             for (int y = 0; y < Height; y++)
             {
                 tiles[x, y] = new Tile(x, y);
+                tiles[x, y].parentRoom = this;
             }
         }
     }
@@ -71,6 +72,12 @@ public class Room
                 {
                     SetWall(x, y);
                     SetFeature(x, y, FeatureID.WALL);
+                }
+                else
+                {
+                    Tile t = GetTile(x, y);
+                    t.IsWall = false;
+                    t.IsFloor = true;
                 }
             }
         }

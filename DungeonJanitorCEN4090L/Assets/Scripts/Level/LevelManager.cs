@@ -1,13 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 public class LevelManager : MonoBehaviour
 {
+    private GameObject player;
+
     [Header("Features")]
     public GameObject wallPrefab;
     public GameObject tablePrefab;
     public GameObject decorationPrefab;
-    public GameObject doorPrefab;
+    public GameObject carpetPrefab;
     public GameObject chairPrefab;
     public GameObject chestPrefab;
 
@@ -40,10 +43,23 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        if (currentDifficulty == null)
-        {
+        int choice = SelectedMission.index;
+        MissionInfo m = MissionManager.Instance.missions[choice];
+
+        // Convert MissionInfo into MissionDifficulty logic
+        if (m.difficulty == "Easy")
+        { 
             currentDifficulty = MissionDifficulty.Easy;
         }
+        else if (m.difficulty == "Medium")
+        {
+            currentDifficulty = MissionDifficulty.Medium;
+        }
+        else 
+        {
+            currentDifficulty = MissionDifficulty.Hard;
+        }
+        player = GameObject.FindWithTag("Player");
         
         GenerateLevel(currentDifficulty);
 
@@ -51,6 +67,7 @@ public class LevelManager : MonoBehaviour
         // GenerateSampleLevel();
 
         SpawnFeatures();
+        SpawnPlayer();
     }
 
     void InitializeFeaturePrefabs()
@@ -60,7 +77,7 @@ public class LevelManager : MonoBehaviour
             { FeatureID.TABLE, tablePrefab },
             { FeatureID.WALL, wallPrefab },
             { FeatureID.DECORATION, decorationPrefab },
-            { FeatureID.DOOR, doorPrefab },
+            { FeatureID.CARPET, carpetPrefab },
             { FeatureID.CHAIR, chairPrefab },
             { FeatureID.CHEST, chestPrefab },
 	        { FeatureID.DIRT_PILE, dirtPilePrefab },
@@ -140,12 +157,20 @@ public class LevelManager : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            int x = Random.Range(1, room.Width - 1);
-            int y = Random.Range(1, room.Height - 1);
+            Tile tile = GetRandomEmptyTile(room);
+            if (tile == null)
+            {
+                return;
+            }
+            // This code is lazy and bad. Walls are considered features in the enum and can be generated on the floor, potentially soft-locking a player.
+            // The proper solution is for me to redo every prefab and script that references Features and fix the FeatureIDs, but that is a lot of work that we don't have time for.
+            // I am triaging this, acknowledging it is a sloppy solution.
+            int feature = Random.Range(FeatureID.TABLE, FeatureID.CHEST + 1);
+            if (feature == FeatureID.WALL)
+                feature = FeatureID.TABLE;
 
-            int feature = Random.Range(1, 6); // TABLE-CHEST ONLY! In a perfect world this would be two const variables but I have hard coded it here.
-            room.SetFeature(x, y, feature);
-        }
+            tile.FeatureID = feature;
+        }   
     }
 
     void GenerateRandomMesses(Room room)
@@ -154,16 +179,36 @@ public class LevelManager : MonoBehaviour
 
         for (int i = 0; i < messCount; i++)
         {
-            int x = Random.Range(1, room.Width - 1);
-            int y = Random.Range(1, room.Height - 1);
+            Tile tile = GetRandomEmptyTile(room);
+            if (tile == null)
+            {
+                return;
+            }
 
-            int messID = Random.Range(FeatureID.DIRT_PILE, FeatureID.SKELETON + 1);
-
-            Tile tile = room.GetTile(x, y);
-            tile.FeatureID = messID;
-
+            tile.FeatureID = Random.Range(FeatureID.DIRT_PILE, FeatureID.SKELETON + 1);
             totalMesses++;
         }
+    }
+
+    Tile GetRandomEmptyTile(Room room)
+    {
+        List<Tile> empty = new List<Tile>();
+
+        for (int x = 1; x < room.Width - 1; x++)
+        {
+            for (int y = 1; y < room.Height - 1; y++)
+            {
+                Tile t = room.GetTile(x, y);
+
+                if (!t.IsWall && t.FeatureID == FeatureID.NONE)
+                    empty.Add(t);
+            }
+        }
+
+        if (empty.Count == 0)
+            return null;
+
+        return empty[Random.Range(0, empty.Count)];
     }
 
     // Now that the level is properly spawned in, we add features
@@ -179,11 +224,9 @@ public class LevelManager : MonoBehaviour
             }
 
             // Build a new world position based off of tile positions and their size
-            Vector2 worldPos =
-                new Vector2(tile.Position.x, tile.Position.y) * tileSize +
-                CurrentLevel.Rooms[0].Position;
+            Room parentRoom = tile.parentRoom;
 
-            Room parentRoom = FindRoomFromTile(tile);
+            Vector2 worldPos = (parentRoom.Position + (Vector2)tile.Position) * tileSize;
 
             GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity);
             obj.transform.parent = transform;
@@ -203,19 +246,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    Room FindRoomFromTile(Tile tile)
-    {
-        foreach (Room r in CurrentLevel.Rooms)
-        {
-            if (tile.Position.x < r.Width && tile.Position.y < r.Height)
-                return r;
-        }
-        return null;
-    }
     // This function should be an exhaustive list of which features block movement
     bool ShouldHaveCollider(int featureID)
     {
-        return featureID == FeatureID.TABLE || featureID == FeatureID.WALL || featureID == FeatureID.CHEST;
+        return featureID == FeatureID.TABLE || featureID == FeatureID.WALL || featureID == FeatureID.CHEST || featureID == FeatureID.CHAIR;
     }
     // This function forces colliders to spawn (for Rigidbody purposes)
     void EnsureCollider(GameObject obj)
@@ -230,6 +264,14 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+    // Player spawn script
+    void SpawnPlayer()
+    {
+        Room room = CurrentLevel.Rooms[0];
+        Vector2 spawnPos = room.TileToWorldPosition(room.Width / 2, room.Height / 2);
+        player.transform.position = spawnPos;
+    }
+
     // Returns Feature's name
     string GetFeatureName(int featureID)
     {
@@ -238,7 +280,7 @@ public class LevelManager : MonoBehaviour
             case FeatureID.TABLE: return "Table";
             case FeatureID.WALL: return "Wall";
             case FeatureID.DECORATION: return "Decoration";
-            case FeatureID.DOOR: return "Door";
+            case FeatureID.CARPET: return "Carpet";
             case FeatureID.CHAIR: return "Chair";
             case FeatureID.CHEST: return "Chest";
 	        case FeatureID.DIRT_PILE: return "Dirt Pile";

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Room : MonoBehaviour
+public class RoomController : MonoBehaviour
 {
     public List<Enemy> enemiesInRoom = new List<Enemy>();
     
