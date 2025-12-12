@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SaveLoad.unity
     guid: 63a8f1f5961d0b447a76b5c98d0bfc43
+  - enabled: 1
+    path: Assets/Scenes/HubWorld.unity
+    guid: c0b5360d291d9964283fea9cbbb98adb
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 6f05f9adee1ec1f4c86cc5e98f25e1e2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
