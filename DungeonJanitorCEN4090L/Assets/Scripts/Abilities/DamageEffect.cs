@@ -12,7 +12,16 @@ public class DamageEffect : IEffect
         var health = target.GetComponent<HealthComponent>();
         if (health == null) return;
 
-        int finalDamage = (int)def.GetScaledMagnitude();
+        int finalDamage = PassiveStats.ModifyDamage((int)def.GetScaledMagnitude());
+
+        if (caster != null)
+        {
+            var prs = caster.GetComponent<PlayerRuntimeStats>();
+            if (prs != null && prs.PlayerData != null)
+            {
+                finalDamage = Mathf.RoundToInt(finalDamage * prs.PlayerData.WeaponDamageMult);
+            }
+        }
 
         health.TakeDamage(finalDamage);
 
