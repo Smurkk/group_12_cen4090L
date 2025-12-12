@@ -31,10 +31,10 @@ public class ShopUIManager : MonoBehaviour
     public List<ShopItemSO> items = new();
 
     [Header("Wiring")]
-    public Transform gridParent;             // ScrollView/Viewport/Content
-    public ShopItemCard cardPrefab;          // Prefabs/UI/ShopItemCard
-    public Currency currency;                // GameSystems (Currency)
-    public TMP_Text goldText;                // GoldText TMP
+    public Transform gridParent;             
+    public ShopItemCard cardPrefab;          
+    public Currency currency;                
+    public TMP_Text goldText;                
 
     [Header("Weapon Shop")]
     public Transform swordColumn;            // parent for swords
@@ -51,7 +51,6 @@ public class ShopUIManager : MonoBehaviour
 
     void Awake()
     {
-        // Try auto-find columns under gridParent if not assigned
         if (gridParent != null)
         {
             if (swordColumn == null)
@@ -227,10 +226,8 @@ public class ShopUIManager : MonoBehaviour
     {
         if (playerData == null) return;
 
-        // tierIndex 0..4 => tier 1..5
         int tier = entry.tierIndex + 1;
 
-        // Each tier gives +20% damage: 1.2..2.0
         float mult = 1f + 0.2f * tier;
 
         switch (entry.type)
@@ -347,7 +344,7 @@ public class ShopUIManager : MonoBehaviour
             }
         }
 
-        // Determine "equipped" as best purchased tier per type
+        // Determine equipped as best purchased tier per type
         foreach (WeaponType type in System.Enum.GetValues(typeof(WeaponType)))
         {
             ShopItemSO best = null;
@@ -369,7 +366,7 @@ public class ShopUIManager : MonoBehaviour
             if (best != null)
                 equippedByType[type] = best;
 
-            // ALSO apply multiplier to Player based on best tier (so loading the shop fixes stats)
+            // apply multiplier to Player based on best tier 
             if (bestTier >= 0 && playerData != null)
             {
                 float mult = 1f + 0.2f * (bestTier + 1);

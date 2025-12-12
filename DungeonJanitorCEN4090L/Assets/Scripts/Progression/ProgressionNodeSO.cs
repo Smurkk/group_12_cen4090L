@@ -20,7 +20,7 @@ public class ProgressionNodeSO : ScriptableObject
     [Header("Passive Unlock")]
     public PassiveType passiveType;
 
-    // I-V maps to 1-5. Tier 0 means "not a passive tier node" (optional, for future).
+    // I-V maps to 1-5. Tier 0 means "not a passive tier node"
     [Range(0, 5)]
     public int passiveTier = 0;
 

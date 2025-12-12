@@ -10,19 +10,15 @@ public class ProgressionNodeCard : MonoBehaviour
     public TMP_Text costText;
     public Button unlockButton;
 
-    // label text on the button ("Unlock", "Unlocked", "Locked")
     public TMP_Text buttonLabel;
 
-    // lock icon that we can toggle on/off
     public GameObject lockIcon;
 
     private ProgressionNodeSO data;
     private System.Action<ProgressionNodeSO> onUnlock;
 
-    // Expose which node this card represents
     public ProgressionNodeSO Node => data;
 
-    // NEW main Bind: no isUnlocked flag; manager controls state via helper methods.
     public void Bind(ProgressionNodeSO node, System.Action<ProgressionNodeSO> onUnlockClicked)
     {
         data = node;
@@ -49,32 +45,24 @@ public class ProgressionNodeCard : MonoBehaviour
             unlockButton.onClick.AddListener(() => onUnlock?.Invoke(data));
         }
 
-        // Default; manager should immediately override with the correct state.
         SetAsLockedNotAvailable();
     }
 
-    // 🔁 OVERLOAD for old code: supports Bind(node, isUnlocked, callback)
     public void Bind(ProgressionNodeSO node, bool isUnlocked, System.Action<ProgressionNodeSO> onUnlockClicked)
     {
-        // Use the main Bind for shared setup
         Bind(node, onUnlockClicked);
 
-        // Then set initial state based on the bool flag
         if (isUnlocked)
         {
             SetAsUnlocked();
         }
         else
         {
-            SetAsUnlockable(); // or LockedNotAvailable, depending on how your old logic worked
+            SetAsUnlockable(); 
         }
     }
 
-    // =======================
-    //  STATE VISUAL HELPERS
-    // =======================
-
-    // Node cannot be unlocked yet (previous tier not unlocked)
+    // Node cannot be unlocked yet 
     public void SetAsLockedNotAvailable()
     {
         if (unlockButton) unlockButton.interactable = false;
@@ -83,7 +71,7 @@ public class ProgressionNodeCard : MonoBehaviour
         if (costText) costText.text = $"Cost: {data?.cost ?? 0}";
     }
 
-    // Node is available to unlock (previous tiers satisfied, you can afford it etc.)
+    // Node is available to unlock 
     public void SetAsUnlockable()
     {
         if (unlockButton) unlockButton.interactable = true;

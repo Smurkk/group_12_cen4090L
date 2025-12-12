@@ -27,14 +27,14 @@ public class Experience : MonoBehaviour
         if (XP < amount) return false;
 
         XP -= amount;
-        SaveXP();           // <-- persist after spending
+        SaveXP();           //persist after spending
         return true;
     }
 
     public void Add(int amount)
     {
         XP += amount;
-        SaveXP();           // <-- persist after gaining XP
+        SaveXP();           //persist after gaining XP
     }
 
     public void SaveXP()

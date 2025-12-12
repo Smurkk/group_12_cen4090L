@@ -7,14 +7,14 @@ public class ProgressionTreeUI : MonoBehaviour
     private const string SaveKey_Progression = "ProgressionTree_Unlocked";
 
     [Header("Data")]
-    public List<ProgressionNodeSO> nodes = new();  // all nodes in the tree
-    public Experience experience;                  // GameSystems (Experience)
-    public TMP_Text xpText;                        // header text "XP: ###"
+    public List<ProgressionNodeSO> nodes = new();  
+    public Experience experience;                 
+    public TMP_Text xpText;                        
 
     [Header("Wiring")]
-    public ProgressionNodeCard nodePrefab;         // Prefabs/UI/ProgressionNodeCard
+    public ProgressionNodeCard nodePrefab;         
 
-    // Four columns in the progression tree (Content/Column1..Column4)
+    // Four columns in the progression tree 
     public Transform column1;
     public Transform column2;
     public Transform column3;
@@ -30,10 +30,8 @@ public class ProgressionTreeUI : MonoBehaviour
 
     void Start()
     {
-        // If you later add XP save/load, you could call experience.LoadXP() here.
         LoadProgress();
 
-        // NEW: Recalculate passive bonuses from saved unlocks
         RecalculatePassives();
 
         RefreshXP();
@@ -41,15 +39,11 @@ public class ProgressionTreeUI : MonoBehaviour
         RefreshUI();
     }
 
-    // Optional helper: lets other scripts ask what’s unlocked without exposing the HashSet
     public List<ProgressionNodeSO> GetUnlockedNodes()
     {
         return new List<ProgressionNodeSO>(unlocked);
     }
 
-    // =============================
-    // BUILD THE TREE
-    // =============================
     void BuildTree()
     {
         ClearColumns();
@@ -63,7 +57,6 @@ public class ProgressionTreeUI : MonoBehaviour
             if (parent == null) continue;
 
             var card = Instantiate(nodePrefab, parent);
-            // Bind with callback; visual state will be set in RefreshUI()
             card.Bind(node, HandleUnlock);
 
             spawnedCards.Add(card);
@@ -100,9 +93,6 @@ public class ProgressionTreeUI : MonoBehaviour
         };
     }
 
-    // =============================
-    // UNLOCK LOGIC
-    // =============================
     void HandleUnlock(ProgressionNodeSO node)
     {
         if (node == null) return;
@@ -122,7 +112,6 @@ public class ProgressionTreeUI : MonoBehaviour
             unlocked.Add(node);
             SaveProgress();
 
-            // NEW: Apply passive changes immediately after purchase
             RecalculatePassives();
 
             RefreshXP();
@@ -134,14 +123,13 @@ public class ProgressionTreeUI : MonoBehaviour
         }
     }
 
-    // Tier logic: must unlock all earlier tiers in the same column
+    // must unlock all earlier tiers in the same column
     bool CanUnlock(ProgressionNodeSO node)
     {
-        // Tier 0 is always allowed (XP permitting)
+        // Tier 0 is always allowed 
         if (node.tierIndex == 0)
             return true;
 
-        // For tier n, require tiers 0..(n-1) in same column to be unlocked
         for (int i = 0; i < node.tierIndex; i++)
         {
             var prev = GetNode(node.columnIndex, i);
@@ -163,9 +151,6 @@ public class ProgressionTreeUI : MonoBehaviour
         return null;
     }
 
-    // =============================
-    // SAVE / LOAD
-    // =============================
     void SaveProgress()
     {
         if (nodes == null || nodes.Count == 0)
@@ -184,7 +169,6 @@ public class ProgressionTreeUI : MonoBehaviour
 
         PlayerPrefs.SetString(SaveKey_Progression, sb.ToString());
         PlayerPrefs.Save();
-        // Debug.Log($"Saved progression: {sb}");
     }
 
     void LoadProgress()
@@ -203,25 +187,16 @@ public class ProgressionTreeUI : MonoBehaviour
                 unlocked.Add(nodes[i]);
             }
         }
-
-        // Debug.Log($"Loaded progression: {data}");
     }
 
-    // =============================
-    // PASSIVES
-    // =============================
     void RecalculatePassives()
     {
         if (passiveBonusManager == null) return;
 
-        // Convert HashSet -> List for the manager
         var unlockedList = new List<ProgressionNodeSO>(unlocked);
         passiveBonusManager.Recalculate(unlockedList);
     }
 
-    // =============================
-    // UI REFRESH
-    // =============================
     void RefreshUI()
     {
         foreach (var card in spawnedCards)
@@ -262,17 +237,13 @@ public class ProgressionTreeUI : MonoBehaviour
 
     public void ResetProgression()
     {
-        // Clear runtime state
         unlocked.Clear();
 
-        // Remove saved data
         PlayerPrefs.DeleteKey(SaveKey_Progression);
         PlayerPrefs.Save();
 
-        // NEW: reset passives back to baseline (no unlocks)
         RecalculatePassives();
 
-        // Rebuild visuals to reflect locked state
         RefreshUI();
 
         Debug.Log("Progression tree reset.");
